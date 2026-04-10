@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WareHouse_App.Entities;
 
-namespace WareHouse_App.DAL;
+namespace WareHouse_App.Data;
 
 public class WarehouseDbContext : DbContext
 {
