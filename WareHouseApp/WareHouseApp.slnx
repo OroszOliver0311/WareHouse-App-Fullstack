@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="WareHouseApp.Bll/WareHouseApp.Bll.csproj" />
   <Project Path="WareHouseApp.Dal/WareHouseApp.Dal.csproj" />
 </Solution>
