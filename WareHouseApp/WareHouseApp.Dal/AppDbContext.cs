@@ -5,12 +5,10 @@ namespace WareHouseApp.Dal;
 
 public class AppDbContext : DbContext
 {
-
-    private readonly string _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ag0h6e;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False;Command Timeout=30";
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-        optionsBuilder.UseSqlServer(_connectionString);
     }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
