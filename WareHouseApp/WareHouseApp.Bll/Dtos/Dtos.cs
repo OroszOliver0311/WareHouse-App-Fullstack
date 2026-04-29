@@ -11,3 +11,25 @@ public record ProductDashboardDto
     public string SKU { get; init; } = null!;
     public int TotalQuantity { get; init; }
 }
+
+public record WareHouseDto
+{
+    public int Id { get; init; }
+
+    public string? Name { get; init; }
+
+    public string Location { get; init; } = null! ;
+
+    public int Quantity { get; init; } 
+}
+
+public record ProductDetailDto 
+{ 
+    public int Id { get; init; }
+    public string Name { get; init; } = null!;
+    public string SKU { get; init; } = null!;
+    public decimal UnitPrice { get; init; } = 0;
+
+    public IEnumerable<WareHouseDto> Stocks { get; init; } = [];
+
+}
