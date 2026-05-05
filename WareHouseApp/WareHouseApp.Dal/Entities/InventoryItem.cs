@@ -7,8 +7,8 @@ public class InventoryItem
 
     public int ProductId { get; set; }
     public Product Product { get; set; } = null!;
-    public int WarehouseId { get; set; }
-    public Warehouse Warehouse { get; set; } = null!;
+    public int WareHouseId { get; set; }
+    public Warehouse WareHouse { get; set; } = null!;
 
     public ICollection<StockMovement> Movements { get; } = [];
 

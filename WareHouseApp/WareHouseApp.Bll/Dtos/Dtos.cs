@@ -34,7 +34,12 @@ public record UpdateProductDto
     public decimal Price { get; init; } = 0;
 
 }
-
+public record InventoryItemDto
+{
+    public int ProductId { get; init; }
+    public int WareHouseId { get; init; }
+    public int Quantity { get; init; }
+}
 
 public record WareHouseDto
 {
