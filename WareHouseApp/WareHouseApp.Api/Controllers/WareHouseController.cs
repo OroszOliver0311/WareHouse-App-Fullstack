@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WareHouseApp.Bll.Dtos;
-using WareHouseApp.Bll.Exceptions; // Ez kell a saját kivételed miatt!
+using WareHouseApp.Bll.Exceptions;
 using WareHouseApp.Bll.Interfaces;
 
 namespace WareHouseApp.Api.Controllers;
@@ -10,14 +10,14 @@ namespace WareHouseApp.Api.Controllers;
 public class WareHousesController(IWareHouseService wareHouseService) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<WareHouseDto>>> GetAll()
+    public async Task<ActionResult<IEnumerable<WareHouseDto>>> GetAllWareHouses()
     {
         var warehouses = await wareHouseService.GetAllWareHousesAsync();
         return Ok(warehouses);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<WareHouseDto>> GetById(int id)
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<WareHouseDto>> GetWareHouseById(int id)
     {
         try
         {
@@ -31,14 +31,14 @@ public class WareHousesController(IWareHouseService wareHouseService) : Controll
     }
 
     [HttpPost]
-    public async Task<ActionResult<WareHouseDto>> Create([FromBody] CreateWareHouseDto dto)
+    public async Task<ActionResult<WareHouseDto>> CreateWareHouse(CreateWareHouseDto dto)
     {
         var newWarehouse = await wareHouseService.CreateWareHouseAsync(dto);
-        return CreatedAtAction(nameof(GetById), new { id = newWarehouse.Id }, newWarehouse);
+        return CreatedAtAction(nameof(GetWareHouseById), new { id = newWarehouse.Id }, newWarehouse);
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<WareHouseDto>> Update(int id, [FromBody] CreateWareHouseDto dto)
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<WareHouseDto>> UpdateWareHouse(int id, CreateWareHouseDto dto)
     {
         try
         {
@@ -51,8 +51,8 @@ public class WareHousesController(IWareHouseService wareHouseService) : Controll
         }
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete(int id)
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> DeleteWareHouse(int id)
     {
         try
         {
