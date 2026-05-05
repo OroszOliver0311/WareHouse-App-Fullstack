@@ -24,7 +24,7 @@ public record ProductDetailDto
     public string Name { get; init; } = null!;
     public string SKU { get; init; } = null!;
     public decimal UnitPrice { get; init; } = 0;
-    public IEnumerable<WareHouseDto> Stocks { get; init; } = [];
+    public IEnumerable<ProductDetailWareHouseDto> Stocks { get; init; } = [];
 
 }
 public record UpdateProductDto
@@ -40,8 +40,7 @@ public record InventoryItemDto
     public int WareHouseId { get; init; }
     public int Quantity { get; init; }
 }
-
-public record WareHouseDto
+public record ProductDetailWareHouseDto
 {
     public int Id { get; init; }
 
@@ -50,4 +49,15 @@ public record WareHouseDto
     public string Location { get; init; } = null!;
 
     public int Quantity { get; init; }
+}
+public record WareHouseDto
+{
+    public int Id { get; init; }
+    public string? Name { get; init; }
+    public string Location { get; init; } = null!;
+}
+public record CreateWareHouseDto
+{
+    public string? Name { get; init; }
+    public string Location { get; init; } = null!;
 }
