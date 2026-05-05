@@ -61,3 +61,11 @@ public record CreateWareHouseDto
     public string? Name { get; init; }
     public string Location { get; init; } = null!;
 }
+public record StockMovementDto
+{
+    public int Id { get; init; }
+    public string WareHouseLocation { get; init; } = null!;
+    public bool IsIncoming { get; init; }
+    public int Quantity { get; init; }
+    public DateTime Date { get; init; }
+}
