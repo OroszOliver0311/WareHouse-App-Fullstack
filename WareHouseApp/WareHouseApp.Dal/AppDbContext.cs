@@ -19,20 +19,20 @@ public class AppDbContext : DbContext
                 new Warehouse { Id = 2, Name = "Győri Logisztikai Depó", Location = "Győr, Ipari park" }
             );
         modelBuilder.Entity<Product>().HasData(
-            new Product { Id = 1, Name = "Logitech MX Master 3S", SKU = "LOG-MX-3S-GR", Price = 35000 },
-            new Product { Id = 2, Name = "Dell UltraSharp U2723QE", SKU = "DELL-U2723QE", Price = 210000 },
-            new Product { Id = 3, Name = "Keychron K2 V2", SKU = "KEY-K2-V2-RGB", Price = 42000 }
+            new Product { Id = 1, Name = "Logitech MX Master 3S", SKU = "LOG-MX-3S-GR", UnitPrice = 35000 },
+            new Product { Id = 2, Name = "Dell UltraSharp U2723QE", SKU = "DELL-U2723QE", UnitPrice = 210000 },
+            new Product { Id = 3, Name = "Keychron K2 V2", SKU = "KEY-K2-V2-RGB", UnitPrice = 42000 }
         );
         
         modelBuilder.Entity<InventoryItem>().HasData(
             // Budapest (Id: 1)
-            new InventoryItem { Id = 1, ProductId = 1, WarehouseId = 1, Quantity = 15 },
-            new InventoryItem { Id = 2, ProductId = 2, WarehouseId = 1, Quantity = 5 },
-            new InventoryItem { Id = 3, ProductId = 3, WarehouseId = 1, Quantity = 10 },
+            new InventoryItem { Id = 1, ProductId = 1, WareHouseId = 1, Quantity = 15 },
+            new InventoryItem { Id = 2, ProductId = 2, WareHouseId = 1, Quantity = 5 },
+            new InventoryItem { Id = 3, ProductId = 3, WareHouseId = 1, Quantity = 10 },
 
             // Győr (Id: 2)
-            new InventoryItem { Id = 4, ProductId = 1, WarehouseId = 2, Quantity = 20 },
-            new InventoryItem { Id = 5, ProductId = 3, WarehouseId = 2, Quantity = 8 }
+            new InventoryItem { Id = 4, ProductId = 1, WareHouseId = 2, Quantity = 20 },
+            new InventoryItem { Id = 5, ProductId = 3, WareHouseId = 2, Quantity = 8 }
         );
         modelBuilder.Entity<StockMovement>().HasData(
             new StockMovement

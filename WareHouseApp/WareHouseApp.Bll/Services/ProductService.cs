@@ -31,19 +31,17 @@ public class ProductService(AppDbContext context) : IProductService
                 Id = p.Id,
                 Name = p.Name,
                 SKU = p.SKU,
-                UnitPrice = p.Price, 
+                UnitPrice = p.UnitPrice, 
                 Stocks = p.InventoryItems.Select(i => new WareHouseDto
                 {
-                    Id = i.WarehouseId,
-                    Name = i.Warehouse.Name,
-                    Location = i.Warehouse.Location,
+                    Id = i.WareHouseId,
+                    Name = i.WareHouse.Name,
+                    Location = i.WareHouse.Location,
                     Quantity = i.Quantity
                 }).ToList()
             })
-            .FirstOrDefaultAsync();
-
-        if (product == null)
-            throw new EntityNotFoundException("Product", id);
+            .FirstOrDefaultAsync()
+            ?? throw new EntityNotFoundException("Product", id);
 
         return product;
     }
@@ -53,7 +51,7 @@ public class ProductService(AppDbContext context) : IProductService
         {
             Name = createProduct.Name,
             SKU = createProduct.SKU,
-            Price = createProduct.Price
+            UnitPrice = createProduct.Price
         };
         context.Products.Add(product);
         await context.SaveChangesAsync();
@@ -61,12 +59,11 @@ public class ProductService(AppDbContext context) : IProductService
     }
     public async Task<ProductDashboardDto> UpdateProductAsync(int id, UpdateProductDto updateProduct)
     {
-        var product = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
-        if (product == null)
-            throw new EntityNotFoundException("Product", id);
+        var product = await context.Products.SingleOrDefaultAsync(p => p.Id == id)
+            ?? throw new EntityNotFoundException("Product", id);
         product.Name = updateProduct.Name;
         product.SKU = updateProduct.SKU;
-        product.Price = updateProduct.Price;
+        product.UnitPrice = updateProduct.Price;
         await context.SaveChangesAsync();
          return await context.Products
         .Where(p => p.Id == product.Id)
@@ -81,10 +78,8 @@ public class ProductService(AppDbContext context) : IProductService
     }
     public async Task DeleteProductAsync(int id)
     {
-        var product = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
-
-        if (product == null)
-            throw new EntityNotFoundException("Product", id);
+        var product = await context.Products.SingleOrDefaultAsync(p => p.Id == id)
+            ?? throw new EntityNotFoundException("Product", id);
         context.Products.Remove(product);
         await context.SaveChangesAsync();
     }
