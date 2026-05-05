@@ -32,7 +32,7 @@ public class ProductService(AppDbContext context) : IProductService
                 Name = p.Name,
                 SKU = p.SKU,
                 UnitPrice = p.UnitPrice, 
-                Stocks = p.InventoryItems.Select(i => new WareHouseDto
+                Stocks = p.InventoryItems.Select(i => new ProductDetailWareHouseDto
                 {
                     Id = i.WareHouseId,
                     Name = i.WareHouse.Name,
