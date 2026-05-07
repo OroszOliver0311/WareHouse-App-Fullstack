@@ -1,5 +1,0 @@
-<Solution>
-  <Project Path="WareHouseApp.Api/WareHouseApp.Api.csproj" Id="6c66c66f-30de-4994-8ab9-86691049833a" />
-  <Project Path="WareHouseApp.Bll/WareHouseApp.Bll.csproj" />
-  <Project Path="WareHouseApp.Dal/WareHouseApp.Dal.csproj" />
-</Solution>
