@@ -51,7 +51,7 @@ public class ProductService(AppDbContext context) : IProductService
         {
             Name = createProduct.Name,
             SKU = createProduct.SKU,
-            UnitPrice = createProduct.Price
+            UnitPrice = createProduct.UnitPrice
         };
         context.Products.Add(product);
         await context.SaveChangesAsync();
@@ -63,7 +63,7 @@ public class ProductService(AppDbContext context) : IProductService
             ?? throw new EntityNotFoundException("Product", id);
         product.Name = updateProduct.Name;
         product.SKU = updateProduct.SKU;
-        product.UnitPrice = updateProduct.Price;
+        product.UnitPrice = updateProduct.UnitPrice;
         await context.SaveChangesAsync();
          return await context.Products
         .Where(p => p.Id == product.Id)

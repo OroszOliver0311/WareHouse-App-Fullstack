@@ -15,7 +15,7 @@ public record CreateProductDto
 {
     public string Name { get; init; } = null!;
     public string SKU { get; init; } = null!;
-    public decimal Price { get; init; } = 0;
+    public decimal UnitPrice { get; init; } = 0;
 
 }
 public record ProductDetailDto 
@@ -31,7 +31,7 @@ public record UpdateProductDto
 {
     public string Name { get; init; } = null!;
     public string SKU { get; init; } = null!;
-    public decimal Price { get; init; } = 0;
+    public decimal UnitPrice { get; init; } = 0;
 
 }
 public record InventoryItemDto
