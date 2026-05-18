@@ -1,0 +1,45 @@
+<div class="dashboard-container">
+  
+  @if (product(); as p) {
+    <div class="table-wrapper">
+      
+      <button mat-raised-button color="primary" (click)="goBack()" style="margin-bottom: 20px;">
+        ← Back to Dashboard
+      </button>
+
+      <div style="margin-bottom: 30px; font-family: sans-serif;">
+        <h2>Product Details: {{ p.name }}</h2>
+        <p><b>SKU:</b> {{ p.sku }}</p>
+        <p><b>Unit Price:</b> ${{ p.unitPrice }}</p>
+      </div>
+
+      <h3>Stock Distribution per Warehouse</h3>
+      <table mat-table [dataSource]="p.stocks" class="mat-elevation-z8">
+        
+        <ng-container matColumnDef="warehouse">
+          <th mat-header-cell *matHeaderCellDef> Warehouse </th>
+          <td mat-cell *matCellDef="let element"> {{ element.name || 'Unnamed Warehouse' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="location">
+          <th mat-header-cell *matHeaderCellDef> Location </th>
+          <td mat-cell *matCellDef="let element"> {{ element.location }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef> Quantity </th>
+          <td mat-cell *matCellDef="let element"> <b>{{ element.quantity }} pcs</b> </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+    </div>
+  } @else {
+    <div class="table-wrapper">
+      <p>Loading product details...</p>
+    </div>
+  }
+
+</div>
