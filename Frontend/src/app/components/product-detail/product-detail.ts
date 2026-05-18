@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, signal, Output, EventEmitter } from '@angular/core';
+import { Component, inject, Input, OnInit, signal, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,6 +15,7 @@ import { ProductDetailDto } from '../../models/product.dto';
 })
 export class ProductDetail implements OnInit {
   private readonly productService = inject(ProductService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input() productId!: number;
   @Output() back = new EventEmitter<void>();
@@ -24,7 +25,9 @@ export class ProductDetail implements OnInit {
   editedData: any = {}; 
   isDirty: boolean = false; 
 
-  displayedColumns: string[] = ['warehouse', 'location', 'quantity'];
+  displayedColumns: string[] = ['warehouse', 'location', 'quantity', 'actions'];
+
+  originalStocks: { [warehouseId: number]: number } = {};
 
   ngOnInit(): void {
     if (this.productId) {
@@ -42,8 +45,15 @@ export class ProductDetail implements OnInit {
           unitPrice: data.unitPrice 
         };
         this.isDirty = false; 
+
+        this.originalStocks = {};
+        if (data.stocks) {
+          data.stocks.forEach((stock: any) => {
+            this.originalStocks[stock.id] = stock.quantity; 
+          });
+        }
       },
-      error: (err) => console.error('Hiba a betöltéskor:', err)
+      error: (err) => console.error('Error loading product:', err)
     });
   }
 
@@ -63,9 +73,30 @@ export class ProductDetail implements OnInit {
     this.productService.updateProduct(this.productId, this.editedData).subscribe({
       next: () => {
         this.loadProduct(); 
-        alert('Product updated successfully!');
       },
-      error: (err) => console.error('Hiba mentéskor:', err)
+      error: (err) => console.error('Error saving changes:', err)
+    });
+  }
+
+isStockDirty(warehouseId: number, currentQuantity: any): boolean {
+    return this.originalStocks[warehouseId] !== Number(currentQuantity);
+  }
+
+  updateStock(warehouseId: number, currentQuantity: any): void {
+    const quantityAsNumber = Number(currentQuantity);
+
+    this.productService.updateStockQuantity(this.productId, warehouseId, quantityAsNumber).subscribe({
+      next: () => {
+        this.originalStocks = {
+          ...this.originalStocks,
+          [warehouseId]: quantityAsNumber
+        };
+        
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error updating stock:', err);
+      }
     });
   }
 
