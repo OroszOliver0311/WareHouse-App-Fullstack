@@ -26,13 +26,22 @@ export class ProductDetail implements OnInit {
   isDirty: boolean = false; 
 
   displayedColumns: string[] = ['warehouse', 'location', 'quantity', 'actions'];
-
+  history = signal<any[]>([]);
   originalStocks: { [warehouseId: number]: number } = {};
 
   ngOnInit(): void {
     if (this.productId) {
       this.loadProduct();
+      this.loadHistory();
     }
+  }
+  loadHistory(): void {
+    this.productService.getProductHistory(this.productId).subscribe({
+      next: (data) => {
+        this.history.set(data);
+      },
+      error: (err) => console.error('Error loading history:', err)
+    });
   }
 
   loadProduct(): void {
@@ -93,6 +102,7 @@ isStockDirty(warehouseId: number, currentQuantity: any): boolean {
         };
         
         this.cdr.detectChanges();
+        this.loadHistory();
       },
       error: (err) => {
         console.error('Error updating stock:', err);

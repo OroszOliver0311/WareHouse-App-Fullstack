@@ -16,7 +16,7 @@ export class Dashboard implements OnInit {
   
   @Output() productSelected = new EventEmitter<number>();
   
-  displayedColumns: string[] = ['id', 'name', 'sku', 'totalQuantity'];
+  displayedColumns: string[] = [ 'name', 'sku', 'totalQuantity'];
   dataSource = signal<ProductDashboardDto[]>([]);
 
   ngOnInit(): void {
