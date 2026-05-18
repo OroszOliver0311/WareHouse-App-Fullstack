@@ -11,10 +11,13 @@ private readonly http = inject(HttpClient);
 private readonly apiUrl = 'https://localhost:7122/api/Products';
 
 getDashboard(): Observable<ProductDashboardDto[]> {
-    return this.http.get<ProductDashboardDto[]>(`${this.apiUrl}/dashboard`);
-  }
+  return this.http.get<ProductDashboardDto[]>(`${this.apiUrl}/dashboard`);
+}
 getProductById(id: number): Observable< ProductDetailDto> {
   return this.http.get<ProductDetailDto>(`${this.apiUrl}/${id}`);
+}
+updateProduct(id: number, productData: any): Observable<any> {
+  return this.http.put(`${this.apiUrl}/${id}`, productData);
 }
 
 

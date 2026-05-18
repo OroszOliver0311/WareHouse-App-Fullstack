@@ -1,39 +1,42 @@
 <div class="dashboard-container">
   <div class="table-wrapper">
-    <h2>Inventory Dashboard</h2>
+    
+    <div class="dashboard-card">
+      <h2>Inventory Dashboard</h2>
 
-    <table mat-table [dataSource]="dataSource()" class="mat-elevation-z8">
-      
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> ID </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>
+      <table mat-table [dataSource]="dataSource()" class="mat-elevation-z8">
+        
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Product Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-      </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Product Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="sku">
-        <th mat-header-cell *matHeaderCellDef> SKU </th>
-        <td mat-cell *matCellDef="let element"> {{element.sku}} </td>
-      </ng-container>
+        <ng-container matColumnDef="sku">
+          <th mat-header-cell *matHeaderCellDef> SKU </th>
+          <td mat-cell *matCellDef="let element"> {{element.sku}} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="totalQuantity">
-        <th mat-header-cell *matHeaderCellDef> Total Quantity </th>
-        <td mat-cell *matCellDef="let element"> <b>{{element.totalQuantity}} pcs</b> </td>
-      </ng-container>
+        <ng-container matColumnDef="totalQuantity">
+          <th mat-header-cell *matHeaderCellDef> Total Quantity </th>
+          <td mat-cell *matCellDef="let element"> <b>{{element.totalQuantity}} pcs</b> </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      
-<tr mat-row *matRowDef="let row; columns: displayedColumns;" 
-    (click)="onRowClick(row.id)" 
-    (keydown.enter)="onRowClick(row.id)"
-    (keydown.space)="onRowClick(row.id)"
-    tabindex="0"
-    style="cursor: pointer;">
-</tr>
-      
-    </table>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+            (click)="onRowClick(row.id)"
+            (keydown.enter)="onRowClick(row.id)"
+            (keydown.space)="onRowClick(row.id)"
+            tabindex="0"
+            style="cursor: pointer;">
+        </tr>
+      </table>
+    </div>
+
   </div>
 </div>

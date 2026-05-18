@@ -1,16 +1,36 @@
 <div class="dashboard-container">
-  
   @if (product(); as p) {
     <div class="table-wrapper">
+      
+      <div class="edit-form">
+        <h2>Product Details</h2>
+        
+        <div class="form-group">
+          <label for="productName">Name:</label>
+          <input id="productName" type="text" [(ngModel)]="editedData.name" (ngModelChange)="onFieldChange()">
+        </div>
 
+        <div class="form-group">
+          <label for="productSku">SKU:</label>
+          <input id="productSku" type="text" [(ngModel)]="editedData.sku" (ngModelChange)="onFieldChange()">
+        </div>
 
-      <div style="margin-bottom: 30px; font-family: sans-serif;">
-        <h2>Product Details: {{ p.name }}</h2>
-        <p><b>SKU:</b> {{ p.sku }}</p>
-        <p><b>Unit Price:</b> ${{ p.unitPrice }}</p>
+        <div class="form-group">
+          <label for="productPrice">Unit Price ($):</label>
+          <input id="productPrice" type="number" [(ngModel)]="editedData.unitPrice" (ngModelChange)="onFieldChange()">
+        </div>
+
+        <div style="margin-top: 25px; text-align: left;">
+          <button mat-raised-button 
+                  class="save-btn" 
+                  [disabled]="!isDirty" 
+                  (click)="saveChanges()">
+            Save Changes
+          </button>
+        </div>
       </div>
 
-      <h3>Stock Distribution per Warehouse</h3>
+      <h3>Stock Distribution</h3>
       <table mat-table [dataSource]="p.stocks" class="mat-elevation-z8">
         
         <ng-container matColumnDef="warehouse">
@@ -31,16 +51,16 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-      
-      <button mat-raised-button color="primary" (click)="goBack()" style="margin-bottom: 20px;">
-        ← Back to Dashboard
-      </button>
-      
+
     </div>
+
+    <button mat-raised-button class="fixed-back-btn" (click)="goBack()">
+      ← Back to Dashboard
+    </button>
+    
   } @else {
     <div class="table-wrapper">
       <p>Loading product details...</p>
     </div>
   }
-
 </div>
