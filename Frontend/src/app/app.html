@@ -1,3 +1,11 @@
 <main>
-  <app-dashboard></app-dashboard>
+  @if (!selectedProductId()) {
+    <app-dashboard (productSelected)="selectProduct($event)"></app-dashboard>
+  } 
+  @else {
+    <app-product-detail 
+      [productId]="selectedProductId()!" 
+      (back)="backToDashboard()">
+    </app-product-detail>
+  }
 </main>

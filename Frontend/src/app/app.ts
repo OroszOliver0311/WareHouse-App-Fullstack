@@ -1,12 +1,25 @@
 import { Component, signal } from '@angular/core';
-import { Dashboard } from "./components/dashboard/dashboard";
+import { CommonModule } from '@angular/common';
+import { Dashboard } from './components/dashboard/dashboard'; 
+import { ProductDetail } from './components/product-detail/product-detail';
 
 @Component({
   selector: 'app-root',
-  imports: [ Dashboard],
+  standalone: true,
+  imports: [CommonModule, Dashboard, ProductDetail], 
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrls: ['./app.scss'] 
 })
 export class App {
-  protected readonly title = signal('Frontend');
+  title = 'Warehouse Management System';
+  
+  selectedProductId = signal<number | null>(null);
+
+  selectProduct(id: number): void {
+    this.selectedProductId.set(id);
+  }
+
+  backToDashboard(): void {
+    this.selectedProductId.set(null);
+  }
 }

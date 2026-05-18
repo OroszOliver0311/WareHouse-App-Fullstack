@@ -1,8 +1,8 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, Output, EventEmitter } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { ProductService } from '../../services/product'; // Pontos név a kép alapján
-import { ProductDashboardDto } from '../../models/product.dto'; // Pontos név a kép alapján
+import { ProductService } from '../../services/product';
+import { ProductDashboardDto } from '../../models/product.dto'; 
 
 @Component({
   selector: 'app-dashboard',
@@ -14,17 +14,19 @@ import { ProductDashboardDto } from '../../models/product.dto'; // Pontos név a
 export class Dashboard implements OnInit {
   private readonly productService = inject(ProductService);
   
-  displayedColumns: string[] = ['id', 'name', 'sku', 'totalQuantity'];
+  @Output() productSelected = new EventEmitter<number>();
   
-  // Signal használata a hiba ellen
+  displayedColumns: string[] = ['id', 'name', 'sku', 'totalQuantity'];
   dataSource = signal<ProductDashboardDto[]>([]);
 
   ngOnInit(): void {
     this.productService.getDashboard().subscribe({
-      next: (data) => {
-        this.dataSource.set(data); // Adat beállítása
-      },
+      next: (data) => this.dataSource.set(data),
       error: (err) => console.error('Hiba:', err)
     });
+  }
+
+  onRowClick(id: number): void {
+    this.productSelected.emit(id);
   }
 }
