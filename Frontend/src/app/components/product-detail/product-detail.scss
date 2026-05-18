@@ -109,6 +109,23 @@ td.mat-cell, td.mat-mdc-cell {
   padding: 16px 20px !important;
 }
 
+.stock-card {
+  background: #ffffff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); 
+  margin-bottom: 30px;
+}
+
+.stock-card h3 {
+  margin-top: 0; 
+  margin-bottom: 20px;
+}
+
+.stock-card table {
+  box-shadow: none !important;
+  border: 1px solid #e2e8f0;
+}
 
 .stock-input {
   width: 70px;
