@@ -1,0 +1,28 @@
+
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+  padding: 50px;
+  width: 100%;
+  box-sizing: border-box;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  cursor: default;
+}
+
+.table-wrapper {
+  width: 100%;
+  max-width: 1200px;
+}
+
+button {
+  cursor: pointer;
+}
+
+
+table {
+  width: 100%;
+  margin-top: 15px;
+}

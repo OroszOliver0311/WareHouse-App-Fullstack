@@ -2,10 +2,7 @@
   
   @if (product(); as p) {
     <div class="table-wrapper">
-      
-      <button mat-raised-button color="primary" (click)="goBack()" style="margin-bottom: 20px;">
-        ← Back to Dashboard
-      </button>
+
 
       <div style="margin-bottom: 30px; font-family: sans-serif;">
         <h2>Product Details: {{ p.name }}</h2>
@@ -34,7 +31,11 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-
+      
+      <button mat-raised-button color="primary" (click)="goBack()" style="margin-bottom: 20px;">
+        ← Back to Dashboard
+      </button>
+      
     </div>
   } @else {
     <div class="table-wrapper">
