@@ -5,11 +5,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms'; 
 import { ProductService } from '../../services/product';
 import { ProductDetailDto } from '../../models/product.dto';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatButtonModule, FormsModule], 
+imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, FormsModule],
   templateUrl: './product-detail.html',
   styleUrls: ['./product-detail.scss']
 })
@@ -38,6 +39,10 @@ export class ProductDetail implements OnInit {
     quantity: 0
   };
 
+
+  searchTerm: string = '';
+  isDropdownOpen: boolean = false;
+
   ngOnInit(): void {
     if (this.productId) {
       this.loadAllWarehouses();
@@ -56,9 +61,13 @@ export class ProductDetail implements OnInit {
     });
   }
 
-  loadProduct(): void {
+loadProduct(): void {
     this.productService.getProductById(this.productId).subscribe({
       next: (data) => {
+        if (data.stocks) {
+          data.stocks = data.stocks.filter((s: any) => s.quantity > 0);
+        }
+
         this.product.set(data);
         this.editedData = { 
           name: data.name, 
@@ -87,6 +96,32 @@ export class ProductDetail implements OnInit {
     const assignedIds = currentProduct.stocks.map((s: any) => s.id);
     this.availableWarehouses = this.allWarehouses.filter(wh => !assignedIds.includes(wh.id));
   }
+
+
+  filteredWarehouses(): any[] {
+    const search = this.searchTerm.toLowerCase();
+    return this.availableWarehouses.filter(wh => 
+      wh.name.toLowerCase().includes(search) || 
+      wh.location.toLowerCase().includes(search)
+    );
+  }
+
+  onSearchChange(): void {
+    this.newAssignment.warehouseId = null;
+  }
+
+  selectWarehouse(wh: any): void {
+    this.newAssignment.warehouseId = wh.id;
+    this.searchTerm = `${wh.name} (${wh.location})`;
+    this.isDropdownOpen = false;
+  }
+
+  hideDropdown(): void {
+    setTimeout(() => {
+      this.isDropdownOpen = false;
+    }, 200); 
+  }
+
 
   loadHistory(): void {
     this.productService.getProductHistory(this.productId).subscribe({
@@ -144,13 +179,27 @@ export class ProductDetail implements OnInit {
       }
     });
   }
+  
+removeStock(warehouseId: number): void {
 
-  assignToWarehouse(): void {
-    if (!this.newAssignment.warehouseId || this.newAssignment.quantity < 0) return;
+    this.productService.updateStockQuantity(this.productId, warehouseId, 0).subscribe({
+      next: () => {
+        this.loadProduct(); 
+        this.loadHistory();
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Error removing stock:', err)
+    });
+  }
+
+assignToWarehouse(): void {
+  
+    if (!this.newAssignment.warehouseId || this.newAssignment.quantity <= 0) return;
 
     this.productService.updateStockQuantity(this.productId, this.newAssignment.warehouseId, this.newAssignment.quantity).subscribe({
       next: () => {
         this.newAssignment = { warehouseId: null, quantity: 0 };
+        this.searchTerm = ''; 
         this.loadProduct(); 
         this.loadHistory();
         this.cdr.detectChanges();

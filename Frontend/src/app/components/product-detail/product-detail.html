@@ -54,12 +54,15 @@
 
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef> Actions </th>
-              <td mat-cell *matCellDef="let element" style="text-align: right;">
+              <td mat-cell *matCellDef="let element" style="text-align: right; white-space: nowrap;">
                 <button mat-raised-button 
                         class="update-stock-btn"
                         [disabled]="!isStockDirty(element.id, element.quantity) || element.quantity < 0 || element.quantity === null"
                         (click)="updateStock(element.id, element.quantity)">
                   Update
+                </button>
+                <button mat-icon-button class="delete-btn" style="margin-left: 5px;" (click)="removeStock(element.id)">
+                  <mat-icon>delete</mat-icon>
                 </button>
               </td>
             </ng-container>
@@ -72,21 +75,39 @@
         @if (availableWarehouses.length > 0) {
           <div class="assign-warehouse-row">
             <h4>Assign to New Warehouse</h4>
+            
             <div class="assign-form">
-              <select [(ngModel)]="newAssignment.warehouseId" class="custom-select">
-                <option [ngValue]="null" disabled selected>Select a warehouse...</option>
-                @for (wh of availableWarehouses; track wh.id) {
-                  <option [ngValue]="wh.id">{{ wh.name }} ({{ wh.location }})</option>
+              <div class="custom-search-select">
+                <input type="text"
+                       [(ngModel)]="searchTerm"
+                       (ngModelChange)="onSearchChange()"
+                       (focus)="isDropdownOpen = true"
+                       (blur)="hideDropdown()"
+                       placeholder="Search warehouse..."
+                       class="search-input">
+                
+                @if (isDropdownOpen) {
+                  <div class="dropdown-list">
+                    @if (filteredWarehouses().length > 0) {
+                      @for (wh of filteredWarehouses(); track wh.id) {
+                        <div class="dropdown-item" (click)="selectWarehouse(wh)">
+                          {{ wh.name }} <span class="loc-text">({{ wh.location }})</span>
+                        </div>
+                      }
+                    } @else {
+                      <div class="dropdown-item no-results">No warehouses found</div>
+                    }
+                  </div>
                 }
-              </select>
+              </div>
 
-              <input type="number" min="0" class="stock-input" [(ngModel)]="newAssignment.quantity" placeholder="Qty">
+              <input type="number" min="0" class="stock-input assign-qty" [(ngModel)]="newAssignment.quantity" placeholder="Qty">
 
-              <button mat-raised-button 
+<button mat-raised-button 
                       class="assign-btn"
-                      [disabled]="!newAssignment.warehouseId || newAssignment.quantity < 0 || newAssignment.quantity === null"
+                      [disabled]="!newAssignment.warehouseId || newAssignment.quantity <= 0 || newAssignment.quantity === null"
                       (click)="assignToWarehouse()">
-                + Assign
+                Assign
               </button>
             </div>
           </div>

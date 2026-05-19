@@ -48,4 +48,7 @@ getProductHistory(productId: number): Observable<any[]> {
 getAllWarehouses(): Observable<any[]> {
   return this.http.get<any[]>(this.warehouseApiUrl);
 }
+removeStockAssignment(productId: number, warehouseId: number): Observable<any> {
+  return this.http.delete(`${this.inventoryApiUrl}/${productId}/warehouse/${warehouseId}`);
+}
 }
