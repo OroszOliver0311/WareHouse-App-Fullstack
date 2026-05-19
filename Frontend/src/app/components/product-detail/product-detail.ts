@@ -26,21 +26,33 @@ export class ProductDetail implements OnInit {
   isDirty: boolean = false; 
 
   displayedColumns: string[] = ['warehouse', 'location', 'quantity', 'actions'];
-  history = signal<any[]>([]);
+
   originalStocks: { [warehouseId: number]: number } = {};
+  history = signal<any[]>([]);
+
+  allWarehouses: any[] = [];
+  availableWarehouses: any[] = [];
+  
+  newAssignment = {
+    warehouseId: null as number | null,
+    quantity: 0
+  };
 
   ngOnInit(): void {
     if (this.productId) {
+      this.loadAllWarehouses();
       this.loadProduct();
       this.loadHistory();
     }
   }
-  loadHistory(): void {
-    this.productService.getProductHistory(this.productId).subscribe({
+
+  loadAllWarehouses(): void {
+    this.productService.getAllWarehouses().subscribe({
       next: (data) => {
-        this.history.set(data);
+        this.allWarehouses = data;
+        this.updateAvailableWarehouses();
       },
-      error: (err) => console.error('Error loading history:', err)
+      error: (err) => console.error('Error loading warehouses:', err)
     });
   }
 
@@ -61,8 +73,27 @@ export class ProductDetail implements OnInit {
             this.originalStocks[stock.id] = stock.quantity; 
           });
         }
+        
+        this.updateAvailableWarehouses();
       },
       error: (err) => console.error('Error loading product:', err)
+    });
+  }
+
+  updateAvailableWarehouses(): void {
+    const currentProduct = this.product();
+    if (!currentProduct || this.allWarehouses.length === 0) return;
+
+    const assignedIds = currentProduct.stocks.map((s: any) => s.id);
+    this.availableWarehouses = this.allWarehouses.filter(wh => !assignedIds.includes(wh.id));
+  }
+
+  loadHistory(): void {
+    this.productService.getProductHistory(this.productId).subscribe({
+      next: (data) => {
+        this.history.set(data); 
+      },
+      error: (err) => console.error('Error loading history:', err)
     });
   }
 
@@ -77,7 +108,7 @@ export class ProductDetail implements OnInit {
   }
 
   saveChanges(): void {
-    if (!this.isDirty) return;
+    if (!this.isDirty || this.editedData.unitPrice <= 0) return;
 
     this.productService.updateProduct(this.productId, this.editedData).subscribe({
       next: () => {
@@ -87,12 +118,17 @@ export class ProductDetail implements OnInit {
     });
   }
 
-isStockDirty(warehouseId: number, currentQuantity: any): boolean {
-    return this.originalStocks[warehouseId] !== Number(currentQuantity);
+  isStockDirty(warehouseId: number, currentQuantity: any): boolean {
+    const qty = Number(currentQuantity);
+    if (currentQuantity === null || currentQuantity === undefined || qty < 0) {
+      return false;
+    }
+    return this.originalStocks[warehouseId] !== qty;
   }
 
   updateStock(warehouseId: number, currentQuantity: any): void {
     const quantityAsNumber = Number(currentQuantity);
+    if (quantityAsNumber < 0) return;
 
     this.productService.updateStockQuantity(this.productId, warehouseId, quantityAsNumber).subscribe({
       next: () => {
@@ -100,13 +136,26 @@ isStockDirty(warehouseId: number, currentQuantity: any): boolean {
           ...this.originalStocks,
           [warehouseId]: quantityAsNumber
         };
-        
         this.cdr.detectChanges();
-        this.loadHistory();
+        this.loadHistory(); 
       },
       error: (err) => {
         console.error('Error updating stock:', err);
       }
+    });
+  }
+
+  assignToWarehouse(): void {
+    if (!this.newAssignment.warehouseId || this.newAssignment.quantity < 0) return;
+
+    this.productService.updateStockQuantity(this.productId, this.newAssignment.warehouseId, this.newAssignment.quantity).subscribe({
+      next: () => {
+        this.newAssignment = { warehouseId: null, quantity: 0 };
+        this.loadProduct(); 
+        this.loadHistory();
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Error assigning to warehouse:', err)
     });
   }
 
