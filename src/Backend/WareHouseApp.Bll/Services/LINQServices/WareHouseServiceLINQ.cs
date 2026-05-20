@@ -8,9 +8,9 @@ using WareHouseApp.Bll.Exceptions;
 using WareHouseApp.Bll.Interfaces;
 using WareHouseApp.Dal;
 
-namespace WareHouseApp.Bll.Services;
+namespace WareHouseApp.Bll.Services.LINQServices;
 
-public class WareHouseService(AppDbContext context) : IWareHouseService
+public class WareHouseServiceLINQ(AppDbContext context) : IWareHouseService
 {
     public async Task<IEnumerable<WareHouseDto>> GetAllWareHousesAsync()
     {

@@ -5,9 +5,9 @@ using WareHouseApp.Bll.Exceptions;
 using WareHouseApp.Bll.Interfaces;
 using WareHouseApp.Dal;
 
-namespace WareHouseApp.Bll.Services;
+namespace WareHouseApp.Bll.Services.LINQServices;
 
-public class ProductService(AppDbContext context) : IProductService
+public class ProductServiceLINQ(AppDbContext context) : IProductService
 {
     public async Task<IEnumerable<ProductDashboardDto>> GetDashboardAsync()
     {
