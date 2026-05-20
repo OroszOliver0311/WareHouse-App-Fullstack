@@ -34,10 +34,11 @@ public class ProductServiceAutoMapper(AppDbContext context, IMapper mapper) : IP
          await context.SaveChangesAsync();
          return await GetProductDetailAsync(p.Id);
     }
-    public async Task<ProductDashboardDto> UpdateProductAsync(int id, UpdateProductDto updateProduct) 
+    public async Task<ProductDashboardDto> UpdateProductAsync(int id, CreateProductDto updateProduct) 
     {
         var p = await context.Products.SingleOrDefaultAsync(p => p.Id == id)
-                               ?? throw new EntityNotFoundException("Product", id);
+            ?? throw new EntityNotFoundException("Product", id);
+
         mapper.Map(updateProduct, p);
         await context.SaveChangesAsync();
         return await context.Products

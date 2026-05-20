@@ -57,7 +57,7 @@ public class ProductServiceLINQ(AppDbContext context) : IProductService
         await context.SaveChangesAsync();
         return await GetProductDetailAsync(product.Id);
     }
-    public async Task<ProductDashboardDto> UpdateProductAsync(int id, UpdateProductDto updateProduct)
+    public async Task<ProductDashboardDto> UpdateProductAsync(int id, CreateProductDto updateProduct)
     {
         var product = await context.Products.SingleOrDefaultAsync(p => p.Id == id)
             ?? throw new EntityNotFoundException("Product", id);
