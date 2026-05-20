@@ -23,6 +23,9 @@ public class MappingProfile : Profile
         //WareHouseServiceMapping
         CreateMap<Warehouse, Dtos.WareHouseDto>();
         CreateMap<CreateWareHouseDto, Warehouse>();
-
+        //StockMovementServiceMapping
+        CreateMap<StockMovement, Dtos.StockMovementDto>()
+            .ForMember(dest => dest.WareHouseLocation,opt => opt.MapFrom(src => src.InventoryItem.WareHouse.Location))
+            .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.MovementDate));
     }
 }

@@ -3,9 +3,9 @@ using WareHouseApp.Bll.Dtos;
 using WareHouseApp.Bll.Interfaces;
 using WareHouseApp.Dal;
 
-namespace WareHouseApp.Bll.Services;
+namespace WareHouseApp.Bll.Services.LINQServices;
 
-public class StockMovementService(AppDbContext context) : IStockMovementService
+public class StockMovementServiceLINQ(AppDbContext context) : IStockMovementService
 {
     public async Task<IEnumerable<StockMovementDto>> GetProductHistoryAsync(int productId)
     {

@@ -6,7 +6,7 @@ using WareHouseApp.Dal;
 
 namespace WareHouseApp.Bll.Services;
 
-public class InventoryService(AppDbContext context) : IInventoryService
+public class InventoryServiceLINQ(AppDbContext context) : IInventoryService
 {
     public async Task UpsertInventoryAsync(InventoryItemDto upsertItem)
     {
