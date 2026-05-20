@@ -7,11 +7,11 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
+        
+        //ProductServiceMapping
         CreateMap<Product, Dtos.ProductDashboardDto>()
             .ForMember(dest => dest.TotalQuantity ,
             opt => opt.MapFrom(src => src.InventoryItems.Sum(i => i.Quantity)));
-
-
         CreateMap<InventoryItem, Dtos.ProductDetailWareHouseDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.WareHouseId))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.WareHouse.Name))
@@ -19,10 +19,10 @@ public class MappingProfile : Profile
         
         CreateMap<Product, Dtos.ProductDetailDto>()
             .ForMember(dest => dest.Stocks, opt => opt.MapFrom(src => src.InventoryItems));
-
         CreateMap<CreateProductDto, Product>();
-        
-        CreateMap<UpdateProductDto, Product>();
+        //WareHouseServiceMapping
+        CreateMap<Warehouse, Dtos.WareHouseDto>();
+        CreateMap<CreateWareHouseDto, Warehouse>();
 
     }
 }

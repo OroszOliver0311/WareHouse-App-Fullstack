@@ -27,13 +27,6 @@ public record ProductDetailDto
     public IEnumerable<ProductDetailWareHouseDto> Stocks { get; init; } = [];
 
 }
-public record UpdateProductDto
-{
-    public string Name { get; init; } = null!;
-    public string SKU { get; init; } = null!;
-    public decimal UnitPrice { get; init; } = 0;
-
-}
 public record InventoryItemDto
 {
     public int ProductId { get; init; }

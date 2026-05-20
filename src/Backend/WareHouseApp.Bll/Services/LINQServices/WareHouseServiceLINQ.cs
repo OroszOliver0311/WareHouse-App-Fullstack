@@ -67,7 +67,7 @@ public class WareHouseServiceLINQ(AppDbContext context) : IWareHouseService
 
         if (hasStock)
            throw new InvalidOperationException("Ezt a raktárat nem lehet törölni, mert még van benne készlet!");
-        context.Warehouses.Remove(warehouse);
+        context.Remove(warehouse);
         await context.SaveChangesAsync();
     }
 }
