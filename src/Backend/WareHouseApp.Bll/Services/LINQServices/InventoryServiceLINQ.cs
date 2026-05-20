@@ -4,7 +4,7 @@ using WareHouseApp.Bll.Dtos;
 using WareHouseApp.Bll.Interfaces;
 using WareHouseApp.Dal;
 
-namespace WareHouseApp.Bll.Services;
+namespace WareHouseApp.Bll.Services.LINQServices;
 
 public class InventoryServiceLINQ(AppDbContext context) : IInventoryService
 {
