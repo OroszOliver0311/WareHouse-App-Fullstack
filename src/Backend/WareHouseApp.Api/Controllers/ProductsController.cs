@@ -30,7 +30,7 @@ public class ProductsController(IProductService productService) : ControllerBase
     }
     
     [HttpPut("{id:int}")]
-    public async Task<ActionResult<ProductDetailDto>> UpdateProduct(int id,UpdateProductDto dto)
+    public async Task<ActionResult<ProductDetailDto>> UpdateProduct(int id,CreateProductDto dto)
     {
         var updatedProduct = await productService.UpdateProductAsync(id, dto);
         return Ok(updatedProduct);
