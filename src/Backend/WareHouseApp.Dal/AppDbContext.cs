@@ -8,7 +8,13 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        base.ConfigureConventions(configurationBuilder);
 
+        configurationBuilder.Properties<decimal>().HavePrecision(18, 2);
+        configurationBuilder.Properties<string>().HaveMaxLength(255);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -44,8 +50,6 @@ public class AppDbContext : DbContext
                 IsIncoming = true
             }
         );
-
-
     }
     public DbSet<Product> Products => Set<Product>();
     public DbSet<Warehouse> Warehouses => Set<Warehouse>();
