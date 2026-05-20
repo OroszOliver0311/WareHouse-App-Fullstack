@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WareHouseApp.Bll.Interfaces;
+using WareHouseApp.Bll.Services.AutoMapperServices;
 using WareHouseApp.Bll.Services.LINQServices;
 using WareHouseApp.Dal;
 
@@ -14,10 +15,10 @@ builder.Services.AddDbContext<AppDbContext>(o =>
 {
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddScoped<IProductService, ProductServiceLINQ>();
+builder.Services.AddScoped<IProductService, ProductServiceAutoMapper>();
 builder.Services.AddScoped<IInventoryService, InventoryServiceLINQ>();
-builder.Services.AddScoped<IWareHouseService, WareHouseServiceLINQ>();
-builder.Services.AddScoped<IStockMovementService, StockMovementServiceLINQ>();
+builder.Services.AddScoped<IWareHouseService, WareHouseServiceAutoMapper>();
+builder.Services.AddScoped<IStockMovementService, StockMovementServiceAutoMapper>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
