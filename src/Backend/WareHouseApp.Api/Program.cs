@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WareHouseApp.Bll.Interfaces;
 using WareHouseApp.Bll.Services;
+using WareHouseApp.Bll.Services.LINQServices;
 using WareHouseApp.Dal;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,9 +15,9 @@ builder.Services.AddDbContext<AppDbContext>(o =>
 {
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductService, ProductServiceLINQ>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
-builder.Services.AddScoped<IWareHouseService, WareHouseService>();
+builder.Services.AddScoped<IWareHouseService, WareHouseServiceLINQ>();
 builder.Services.AddScoped<IStockMovementService, StockMovementService>();
 builder.Services.AddCors(options =>
 {
