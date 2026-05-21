@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using WareHouse_App.Entities;
 using WareHouseApp.Bll.Dtos;
 using WareHouseApp.Bll.Exceptions;
@@ -7,6 +8,8 @@ using WareHouseApp.Bll.Interfaces;
 namespace WareHouseApp.Api.Controllers;
 
 [Route("api/[controller]")]
+[ApiVersion("1.0")]
+[ApiVersion("2.0")]
 [ApiController]
 [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
 [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
@@ -97,4 +100,19 @@ public class WareHousesController(IWareHouseService wareHouseService) : Controll
             return BadRequest(ex.Message);
         }
     }
+
+
+
+    /// <summary>
+    /// V2 Teszt: Egy új funkció, ami csak a 2.0-ás API verzióban létezik!
+    /// </summary>
+    [HttpGet("v2-test")]
+    [MapToApiVersion("2.0")] // <--- Ez a varázsszó! Ettől csak a v2-es legördülőben fog megjelenni.
+    [ProducesResponseType<string>(StatusCodes.Status200OK)]
+    public ActionResult<string> GetV2Test()
+    {
+        return Ok("Sikeresen meghívtad a V2-es API-t az URL megváltoztatása nélkül!");
+    }
+
+
 }

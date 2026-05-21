@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using WareHouseApp.Bll.Dtos;
 using WareHouseApp.Bll.Interfaces;
 
 namespace WareHouseApp.Api.Controllers;
 
-[ApiController]
+
 [Route("api/[controller]")]
+[ApiVersion("1.0")]
+[ApiController]
 [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
 [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
 [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
