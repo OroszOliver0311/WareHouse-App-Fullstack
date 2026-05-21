@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WareHouseApp.Bll.Dtos;
 using WareHouseApp.Bll.Interfaces;
+using WareHouseApp.Bll.Services;
 using WareHouseApp.Bll.Services.AutoMapperServices;
 using WareHouseApp.Bll.Services.LINQServices;
 using WareHouseApp.Dal;
@@ -21,7 +22,7 @@ builder.Services.AddScoped<IInventoryService, InventoryServiceLINQ>();
 builder.Services.AddScoped<IWareHouseService, WareHouseServiceAutoMapper>();
 builder.Services.AddScoped<IStockMovementService, StockMovementServiceAutoMapper>();
 builder.Services.AddAutoMapper(a => a.AddProfile<MappingProfile>());
-
+builder.Services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
 
 builder.Services.AddCors(options =>
 {

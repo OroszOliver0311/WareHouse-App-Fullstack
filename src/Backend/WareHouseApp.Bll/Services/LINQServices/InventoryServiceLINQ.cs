@@ -6,7 +6,7 @@ using WareHouseApp.Dal;
 
 namespace WareHouseApp.Bll.Services.LINQServices;
 
-public class InventoryServiceLINQ(AppDbContext context) : IInventoryService
+public class InventoryServiceLINQ(AppDbContext context, IDateTimeProvider dateTimeProvider) : IInventoryService
 {
     public async Task UpsertInventoryAsync(InventoryItemDto upsertItem)
     {
@@ -37,7 +37,7 @@ public class InventoryServiceLINQ(AppDbContext context) : IInventoryService
             InventoryItem = inventoryItem,
             IsIncoming = difference > 0,
             Quantity = Math.Abs(difference),
-            MovementDate = DateTime.UtcNow
+            MovementDate = dateTimeProvider.UtcNow
         };
 
         context.StockMovements.Add(movement);
