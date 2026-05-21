@@ -60,5 +60,5 @@ public record StockMovementDto
     public string WareHouseLocation { get; init; } = null!;
     public bool IsIncoming { get; init; }
     public int Quantity { get; init; }
-    public DateTime Date { get; init; }
+    public DateTimeOffset Date { get; init; }
 }

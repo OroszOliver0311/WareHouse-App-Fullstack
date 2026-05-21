@@ -7,6 +7,6 @@ public class StockMovement
     public InventoryItem InventoryItem { get; set; } = null!;
     public bool IsIncoming { get; set; }
     public required int Quantity { get; set; }
-    public required DateTime MovementDate { get; set; }
+    public required DateTimeOffset MovementDate { get; set; }
 
 }

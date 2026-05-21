@@ -46,7 +46,7 @@ public class AppDbContext : DbContext
                 Id = 1,
                 InventoryItemId = 1, 
                 Quantity = 15,
-                MovementDate = new DateTime(2026, 4, 26, 10, 0, 0), 
+                MovementDate = new DateTimeOffset(2026, 4, 26, 10, 0, 0, TimeSpan.Zero), 
                 IsIncoming = true
             }
         );
