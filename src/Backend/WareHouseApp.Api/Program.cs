@@ -61,6 +61,9 @@ builder.Services.AddDbContext<AppDbContext>(o =>
 {
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddHealthChecks()
+            .AddDbContextCheck<AppDbContext>("Database");
+
 builder.Services.AddScoped<IProductService, ProductServiceAutoMapper>();
 builder.Services.AddScoped<IInventoryService, InventoryServiceLINQ>();
 builder.Services.AddScoped<IWareHouseService, WareHouseServiceAutoMapper>();
@@ -91,5 +94,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHealthChecks("/api/health");
 
 app.Run();
+
+public partial class Program { }
