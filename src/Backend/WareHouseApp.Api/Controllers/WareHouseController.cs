@@ -14,9 +14,9 @@ namespace WareHouseApp.Api.Controllers;
 public class WareHousesController(IWareHouseService wareHouseService) : ControllerBase
 {
     /// <summary>
-    /// Lekérdezi az összes raktár adatait. Ez a művelet nem igényel paramétereket, és egy listát ad vissza a raktárakról, amelyek tartalmazzák az azonosítójukat, nevüket és helyüket. Ez a művelet hasznos lehet a raktárak áttekintéséhez vagy egy legördülő menü feltöltéséhez, ahol a felhasználó kiválaszthatja a kívánt raktárat.
+    /// Retrieves data for all warehouses. This operation requires no parameters and returns a list of warehouses including their identifiers, names and locations. It can be used to get an overview of warehouses or to populate a dropdown where the user can select a warehouse.
     /// </summary>
-    /// <returns> Az összes raktár listája </returns>
+    /// <returns>List of all warehouses</returns>
     [HttpGet]
     [ProducesResponseType<IEnumerable<WareHouseDto>>(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<WareHouseDto>>> GetAllWareHouses()
@@ -25,10 +25,10 @@ public class WareHousesController(IWareHouseService wareHouseService) : Controll
         return Ok(warehouses);
     }
     /// <summary>
-    /// Lekérdezi a megadott azonosítójú raktár adatait.
+    /// Retrieves data for the warehouse with the specified identifier.
     /// </summary>
-    /// <param name="id"> A raktár egyéni azonosítója </param>
-    /// <returns> A keresett raktár adatai </returns>
+    /// <param name="id">The unique identifier of the warehouse</param>
+    /// <returns>The data of the requested warehouse</returns>
     [HttpGet("{id:int}")]
     [ProducesResponseType<WareHouseDto>(StatusCodes.Status200OK)]
     public async Task<ActionResult<WareHouseDto>> GetWareHouseById(int id)
@@ -44,10 +44,10 @@ public class WareHousesController(IWareHouseService wareHouseService) : Controll
         }
     }
     /// <summary>
-    /// Új raktárat hoz létre a megadott adatok alapján. Ez a művelet egy CreateWareHouseDto objektumot vár a kérés törzsében, amely tartalmazza a raktár nevét és helyét. A művelet sikeres végrehajtása után a létrehozott raktár adatait tartalmazó WareHouseDto objektumot ad vissza, valamint a HTTP 201 Created státuszkódot és a helyét a Location fejlécben.
+    /// Creates a new warehouse using the provided data. This operation expects a CreateWareHouseDto in the request body containing the warehouse name and location. On success it returns a WareHouseDto with the created warehouse data, HTTP 201 Created status and the resource location in the Location header.
     /// </summary>
-    /// <param name="dto"> A létrehozandó raktár adatai </param>
-    /// <returns> A létrehozott raktár adatai </returns>
+    /// <param name="dto">The data for the warehouse to create</param>
+    /// <returns>The created warehouse data</returns>
     [HttpPost]
     [ProducesResponseType<WareHouseDto>(StatusCodes.Status201Created)]
     public async Task<ActionResult<WareHouseDto>> CreateWareHouse(CreateWareHouseDto dto)
@@ -56,11 +56,11 @@ public class WareHousesController(IWareHouseService wareHouseService) : Controll
         return CreatedAtAction(nameof(GetWareHouseById), new { id = newWarehouse.Id }, newWarehouse);
     }
     /// <summary>
-    /// Frissíti a megadott azonosítójú raktárat a megadott adatok alapján.
+    /// Updates the warehouse with the specified identifier using the provided data.
     /// </summary>
-    /// <param name="id"> A raktár egyéni azonosítója </param>
-    /// <param name="dto"> A frissítendő raktár adatai </param>
-    /// <returns> A frissített raktár adatai </returns>
+    /// <param name="id">The unique identifier of the warehouse</param>
+    /// <param name="dto">The warehouse data to update</param>
+    /// <returns>The updated warehouse data</returns>
     [HttpPut("{id:int}")]
     [ProducesResponseType<WareHouseDto>(StatusCodes.Status200OK)]
     public async Task<ActionResult<WareHouseDto>> UpdateWareHouse(int id, CreateWareHouseDto dto)
@@ -76,9 +76,9 @@ public class WareHousesController(IWareHouseService wareHouseService) : Controll
         }
     }
     /// <summary>
-    /// Törli a megadott azonosítójú raktárat.
+    /// Deletes the warehouse with the specified identifier.
     /// </summary>
-    /// <param name="id"> A raktár egyéni azonosítója </param>
+    /// <param name="id">The unique identifier of the warehouse</param>
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteWareHouse(int id)
