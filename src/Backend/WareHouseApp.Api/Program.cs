@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApiDocument();
 builder.Services.AddDbContext<AppDbContext>(o =>
 {
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -21,6 +21,7 @@ builder.Services.AddScoped<IProductService, ProductServiceAutoMapper>();
 builder.Services.AddScoped<IInventoryService, InventoryServiceLINQ>();
 builder.Services.AddScoped<IWareHouseService, WareHouseServiceAutoMapper>();
 builder.Services.AddScoped<IStockMovementService, StockMovementServiceAutoMapper>();
+
 builder.Services.AddAutoMapper(a => a.AddProfile<MappingProfile>());
 builder.Services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
 
@@ -39,14 +40,12 @@ app.UseCors("AllowAngular");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "v1"));
+    app.UseOpenApi();
+    app.UseSwaggerUi();
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
