@@ -16,10 +16,9 @@ public class CustomWebApplicationFactory: WebApplicationFactory<Program>
             var descriptor = services.SingleOrDefault(
                 d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
             if (descriptor != null)
-            {
                 services.Remove(descriptor);
-            }
-            services.AddDbContext<WareHouseDbContext>(options =>
+            
+            services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseInMemoryDatabase("InMemoryDbForTesting");
             });
