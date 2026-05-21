@@ -4,8 +4,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms'; 
 import { ProductService } from '../../services/product';
-import { ProductDetailDto } from '../../models/product.dto';
 import { MatIconModule } from '@angular/material/icon';
+import { ProductDetailDto } from '../../api/api-client';
 
 @Component({
   selector: 'app-product-detail',
@@ -93,7 +93,7 @@ loadProduct(): void {
     const currentProduct = this.product();
     if (!currentProduct || this.allWarehouses.length === 0) return;
 
-    const assignedIds = currentProduct.stocks.map((s: any) => s.id);
+    const assignedIds = currentProduct.stocks?.map((s: any) => s.id) || [];
     this.availableWarehouses = this.allWarehouses.filter(wh => !assignedIds.includes(wh.id));
   }
 
