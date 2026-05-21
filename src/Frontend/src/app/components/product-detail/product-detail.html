@@ -33,7 +33,7 @@
         <h3>Stock Distribution</h3>
         
         <div class="stock-table-container">
-          <table mat-table [dataSource]="p.stocks" class="mat-elevation-z8">
+          <table mat-table [dataSource]="p.stocks ?? []" class="mat-elevation-z8">
             
             <ng-container matColumnDef="warehouse">
               <th mat-header-cell *matHeaderCellDef> Warehouse </th>

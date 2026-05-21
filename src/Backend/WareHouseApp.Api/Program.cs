@@ -39,7 +39,7 @@ builder.Services.AddOpenApiDocument(options =>
     options.ApiGroupNames = new[] { "v1" };
     options.PostProcess = document =>
     {
-        document.Info.Title = "WareHouseApp API - Verzió 1.0";
+        document.Info.Title = "WareHouseApp API - Version 1.0";
         document.Info.Version = "v1.0";
     };
 });
@@ -50,7 +50,7 @@ builder.Services.AddOpenApiDocument(options =>
     options.ApiGroupNames = new[] { "v2" };
     options.PostProcess = document =>
     {
-        document.Info.Title = "WareHouseApp API - Verzió 2.0 (Új funkciók)";
+        document.Info.Title = "WareHouseApp API - Version 2.0 (New Features)";
         document.Info.Version = "v2.0";
     };
 });

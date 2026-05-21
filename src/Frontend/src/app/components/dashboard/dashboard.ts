@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms'; 
 import { ProductService } from '../../services/product';
-import { ProductDashboardDto } from '../../models/product.dto';
+import { ProductDashboardDto } from '../../api/api-client';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,7 +25,7 @@ export class Dashboard implements OnInit {
   newProduct = {
     name: '',
     sku: '',
-    unitPrice: null as number | null
+    unitPrice: undefined
   };
   newWarehouse = {
     name: '',
@@ -49,7 +49,7 @@ export class Dashboard implements OnInit {
 isFormValid(): boolean {
     return !!this.newProduct.name && 
            !!this.newProduct.sku && 
-           this.newProduct.unitPrice !== null && 
+           this.newProduct.unitPrice !== undefined && 
            this.newProduct.unitPrice > 0;
   }
 
@@ -58,7 +58,7 @@ isFormValid(): boolean {
 
     this.productService.createProduct(this.newProduct).subscribe({
       next: () => {
-        this.newProduct = { name: '', sku: '', unitPrice: null };
+        this.newProduct = { name: '', sku: '', unitPrice: undefined };
         this.loadDashboard(); 
       },
       error: (err) => console.error('Error creating product:', err)
