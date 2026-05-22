@@ -4,4 +4,5 @@
     <Project Path="WareHouseApp.Bll/WareHouseApp.Bll.csproj" />
     <Project Path="WareHouseApp.Dal/WareHouseApp.Dal.csproj" />
   </Folder>
+  <Project Path="WareHouseApp.Test/WareHouseApp.Test.csproj" Id="0e7d37ce-21b7-4a3e-a221-8d0cb40f505a" />
 </Solution>
