@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace WareHouseApp.Bll.Dtos;
@@ -13,7 +14,9 @@ public record ProductDashboardDto
 }
 public record CreateProductDto
 {
+    [Required]
     public string Name { get; init; } = null!;
+    [Required]
     public string SKU { get; init; } = null!;
     public decimal UnitPrice { get; init; } = 0;
 
@@ -52,6 +55,7 @@ public record WareHouseDto
 public record CreateWareHouseDto
 {
     public string? Name { get; init; }
+    [Required]
     public string Location { get; init; } = null!;
 }
 public record StockMovementDto

@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
+using WareHouseApp.Api.Exceptions;
 using WareHouseApp.Bll.Dtos;
 using WareHouseApp.Bll.Interfaces;
 using WareHouseApp.Bll.Services;
@@ -72,6 +73,9 @@ builder.Services.AddScoped<IStockMovementService, StockMovementServiceAutoMapper
 builder.Services.AddAutoMapper(a => a.AddProfile<MappingProfile>());
 builder.Services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
@@ -90,7 +94,7 @@ if (app.Environment.IsDevelopment())
     app.UseOpenApi();
     app.UseSwaggerUi();
 }
-
+app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

@@ -36,15 +36,10 @@ public class WareHousesController(IWareHouseService wareHouseService) : Controll
     [ProducesResponseType<WareHouseDto>(StatusCodes.Status200OK)]
     public async Task<ActionResult<WareHouseDto>> GetWareHouseById(int id)
     {
-        try
-        {
+
             var warehouse = await wareHouseService.GetWareHouseByIdAsync(id);
             return Ok(warehouse);
-        }
-        catch (EntityNotFoundException)
-        {
-            return NotFound();
-        }
+
     }
     /// <summary>
     /// Creates a new warehouse using the provided data. This operation expects a CreateWareHouseDto in the request body containing the warehouse name and location. On success it returns a WareHouseDto with the created warehouse data, HTTP 201 Created status and the resource location in the Location header.
@@ -68,15 +63,10 @@ public class WareHousesController(IWareHouseService wareHouseService) : Controll
     [ProducesResponseType<WareHouseDto>(StatusCodes.Status200OK)]
     public async Task<ActionResult<WareHouseDto>> UpdateWareHouse(int id, CreateWareHouseDto dto)
     {
-        try
-        {
+
             var updatedWarehouse = await wareHouseService.UpdateWareHouseAsync(id, dto);
             return Ok(updatedWarehouse);
-        }
-        catch (EntityNotFoundException)
-        {
-            return NotFound();
-        }
+
     }
     /// <summary>
     /// Deletes the warehouse with the specified identifier.
@@ -86,32 +76,23 @@ public class WareHousesController(IWareHouseService wareHouseService) : Controll
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteWareHouse(int id)
     {
-        try
-        {
+
             await wareHouseService.DeleteWareHouseAsync(id);
             return NoContent();
-        }
-        catch (EntityNotFoundException)
-        {
-            return NotFound();
-        }
-        catch (InvalidOperationException ex)
-        {
-            return BadRequest(ex.Message);
-        }
+
     }
 
 
 
     /// <summary>
-    /// V2 Teszt: Egy új funkció, ami csak a 2.0-ás API verzióban létezik!
+    /// New function for v2
     /// </summary>
     [HttpGet("v2-test")]
-    [MapToApiVersion("2.0")] // <--- Ez a varázsszó! Ettől csak a v2-es legördülőben fog megjelenni.
+    [MapToApiVersion("2.0")] 
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
     public ActionResult<string> GetV2Test()
     {
-        return Ok("Sikeresen meghívtad a V2-es API-t az URL megváltoztatása nélkül!");
+        return Ok("Success called  v2");
     }
 
 
