@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
 using WareHouseApp.Api.Exceptions;
 using WareHouseApp.Bll.Dtos;
+using WareHouseApp.Bll.Dtos.Encoding;
 using WareHouseApp.Bll.Interfaces;
 using WareHouseApp.Bll.Services;
 using WareHouseApp.Bll.Services.AutoMapperServices;
@@ -72,6 +73,8 @@ builder.Services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+
+builder.Services.AddSingleton<IIdEncoder, IdEncoder>();
 
 builder.Services.AddCors(options =>
 {

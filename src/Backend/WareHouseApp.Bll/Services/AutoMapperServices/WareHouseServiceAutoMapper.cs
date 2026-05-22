@@ -13,18 +13,18 @@ public class WareHouseServiceAutoMapper(AppDbContext context, IMapper mapper) : 
 {
     public async Task<IEnumerable<WareHouseDto>> GetAllWareHousesAsync()
     {
-        return await context.Warehouses
-            .ProjectTo<WareHouseDto>(mapper.ConfigurationProvider)
-            .ToListAsync();
+        var warehouses = await context.Warehouses.ToListAsync();
+        return mapper.Map<IEnumerable<WareHouseDto>>(warehouses);
     }
 
 
     public async Task<WareHouseDto> GetWareHouseByIdAsync(int id)
     {
-        return await context.Warehouses
-            .ProjectTo<WareHouseDto>(mapper.ConfigurationProvider)
+        var warehouse = await context.Warehouses
             .SingleOrDefaultAsync(w => w.Id == id)
             ?? throw new EntityNotFoundException("WareHouse", id);
+
+        return mapper.Map<WareHouseDto>(warehouse);
 
     }
     public async Task<WareHouseDto> CreateWareHouseAsync(CreateWareHouseDto createWareHouse)
@@ -53,7 +53,7 @@ public class WareHouseServiceAutoMapper(AppDbContext context, IMapper mapper) : 
                         .AnyAsync(i => i.WareHouseId == id && i.Quantity > 0);
 
         if (hasStock)
-            throw new InvalidOperationException("Ezt a raktárat nem lehet törölni, mert még van benne készlet!");
+            throw new InvalidOperationException("Can't delete warehouse with existing stock.");
         context.Remove(wareHouse);
         await context.SaveChangesAsync();
     }

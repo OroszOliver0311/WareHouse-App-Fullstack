@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿#if false
+using Microsoft.EntityFrameworkCore;
 using WareHouse_App.Entities;
 using WareHouseApp.Bll.Dtos;
 using WareHouseApp.Bll.Exceptions;
@@ -84,3 +85,4 @@ public class ProductServiceLINQ(AppDbContext context) : IProductService
         await context.SaveChangesAsync();
     }
 }
+#endif

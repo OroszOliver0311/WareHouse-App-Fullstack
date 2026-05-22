@@ -1,24 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WareHouse_App.Entities;
 using WareHouseApp.Bll.Dtos;
+using WareHouseApp.Bll.Dtos.Encoding;
 using WareHouseApp.Bll.Interfaces;
 using WareHouseApp.Dal;
 
 namespace WareHouseApp.Bll.Services.LINQServices;
 
-public class InventoryServiceLINQ(AppDbContext context, IDateTimeProvider dateTimeProvider) : IInventoryService
+public class InventoryServiceLINQ(AppDbContext context, IDateTimeProvider dateTimeProvider, IIdEncoder idEncoder) : IInventoryService
 {
     public async Task UpsertInventoryAsync(InventoryItemDto upsertItem)
     {
-       var inventoryItem = await context.InventoryItems
-            .FirstOrDefaultAsync(i => i.ProductId == upsertItem.ProductId && i.WareHouseId == upsertItem.WareHouseId);
+        int productId = idEncoder.Decode(upsertItem.ProductId);
+        int wareHouseId = idEncoder.Decode(upsertItem.WareHouseId);
+
+        var inventoryItem = await context.InventoryItems
+            .FirstOrDefaultAsync(i => i.ProductId == productId && i.WareHouseId == wareHouseId);
         int currentQty = 0;
         if (inventoryItem == null)
         {
             inventoryItem = new InventoryItem
             {
-                ProductId = upsertItem.ProductId,
-                WareHouseId = upsertItem.WareHouseId,
+                ProductId = productId,
+                WareHouseId = wareHouseId,
                 Quantity = 0 
             };
             context.InventoryItems.Add(inventoryItem);
