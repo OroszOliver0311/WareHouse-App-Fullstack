@@ -23,10 +23,10 @@ public class ProductServiceAutoMapper(AppDbContext context, IMapper mapper) : IP
     public async Task<ProductDetailDto> GetProductDetailAsync(int id)
     {
         var product = await context.Products
-                .Include(p => p.InventoryItems) 
-                .SingleOrDefaultAsync(p => p.Id == id)
-                ?? throw new EntityNotFoundException("Product", id);
-
+        .Include(p => p.InventoryItems)              
+            .ThenInclude(i => i.WareHouse)           
+        .SingleOrDefaultAsync(p => p.Id == id)
+        ?? throw new EntityNotFoundException("Product", id);
         return mapper.Map<ProductDetailDto>(product);
     }
 
