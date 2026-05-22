@@ -66,3 +66,11 @@ public record StockMovementDto
     public int Quantity { get; init; }
     public DateTimeOffset Date { get; init; }
 }
+
+//PAGINATION
+public record PagedResponse<T>(
+    IEnumerable<T> Items,
+    int PageNumber,
+    int PageSize,
+    int TotalCount
+);

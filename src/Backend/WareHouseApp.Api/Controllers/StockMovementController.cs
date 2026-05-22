@@ -7,6 +7,7 @@ namespace WareHouseApp.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiVersion("1.0")]
+[ApiVersion("2.0")]
 [ApiController]
 [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
 [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]

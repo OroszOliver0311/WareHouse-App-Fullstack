@@ -8,6 +8,7 @@ namespace WareHouseApp.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiVersion("1.0")]
+[ApiVersion("2.0")]
 [ApiController]
 [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
 [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
@@ -20,12 +21,38 @@ public class ProductsController(IProductService productService) : ControllerBase
     /// </summary>
     /// <returns>List of product data required to display the dashboard.</returns>
     [HttpGet("dashboard")]
+    [MapToApiVersion("1.0")]
     [ProducesResponseType<IEnumerable<ProductDashboardDto>>(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<ProductDashboardDto>>> GetDashboard()
+    public async Task<ActionResult<IEnumerable<ProductDashboardDto>>> GetDashboardV1()
     {
         var data = await productService.GetDashboardAsync();
         return Ok(data);
     }
+
+    /// <summary>
+    /// Retrieves paginated dashboard data for products, allowing clients to specify page number and size for efficient data retrieval.
+    /// </summary>
+    /// <param name="pageNumber">The page number to retrieve</param>
+    /// <param name="pageSize">The number of items per page</param>
+    /// <returns></returns>
+    [HttpGet("dashboard")]
+    [MapToApiVersion("2.0")] 
+    [ProducesResponseType<PagedResponse<ProductDashboardDto>>(StatusCodes.Status200OK)]
+    public async Task<ActionResult<PagedResponse<ProductDashboardDto>>> GetDashboardV2(
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        var allProducts = await productService.GetDashboardAsync();
+        var totalCount = allProducts.Count();
+
+        var pagedItems = allProducts
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize);
+
+        var response = new PagedResponse<ProductDashboardDto>(pagedItems, pageNumber, pageSize, totalCount);
+        return Ok(response);
+    }
+
 
     /// <summary>
     /// Retrieves detailed information for a specific product by its identifier.

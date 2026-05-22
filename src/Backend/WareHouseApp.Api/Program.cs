@@ -19,21 +19,18 @@ builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = new ApiVersion(1, 0); 
     options.AssumeDefaultVersionWhenUnspecified = true; 
-    options.ReportApiVersions = true; 
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = new HeaderApiVersionReader("X-Api-Version");
 
-    options.ApiVersionReader = ApiVersionReader.Combine(
-        new QueryStringApiVersionReader("api-version"), 
-        new HeaderApiVersionReader("X-Api-Version")     
-    );
 })
 .AddApiExplorer(options =>
 {
     options.GroupNameFormat = "'v'VVV";
-    options.SubstituteApiVersionInUrl = true;
+    options.SubstituteApiVersionInUrl = false;
 });
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-// V1 Dokumentáció generálása
+
 builder.Services.AddOpenApiDocument(options =>
 {
     options.DocumentName = "v1";
