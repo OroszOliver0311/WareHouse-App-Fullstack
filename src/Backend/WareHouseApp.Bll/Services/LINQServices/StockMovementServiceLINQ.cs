@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿#if false
+using Microsoft.EntityFrameworkCore;
 using WareHouseApp.Bll.Dtos;
 using WareHouseApp.Bll.Interfaces;
 using WareHouseApp.Dal;
@@ -25,3 +26,4 @@ public class StockMovementServiceLINQ(AppDbContext context) : IStockMovementServ
             .ToListAsync();
     }
 }
+#endif

@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using WareHouseApp.Bll.Dtos;
+using WareHouseApp.Bll.Dtos.Encoding;
 using WareHouseApp.Bll.Interfaces;
 
 namespace WareHouseApp.Api.Controllers;
@@ -13,7 +14,7 @@ namespace WareHouseApp.Api.Controllers;
 [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
 [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
 [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
-public class ProductsController(IProductService productService) : ControllerBase
+public class ProductsController(IProductService productService, IIdEncoder idEncoder) : ControllerBase
 {
 
     /// <summary>
@@ -59,11 +60,12 @@ public class ProductsController(IProductService productService) : ControllerBase
     /// </summary>
     /// <param name="id">The unique identifier of the product.</param>
     /// <returns>Detailed information of the product.</returns>
-    [HttpGet("{id:int}")]
+    [HttpGet("{id}")]
     [ProducesResponseType<ProductDetailDto>(StatusCodes.Status200OK)]
-    public async Task<ActionResult<ProductDetailDto>> GetDetails(int id)
+    public async Task<ActionResult<ProductDetailDto>> GetDetails(string id)
     {
-        var product = await productService.GetProductDetailAsync(id);
+        var realId = idEncoder.Decode(id);
+        var product = await productService.GetProductDetailAsync(realId);
         return Ok(product);
     }
     
@@ -86,11 +88,12 @@ public class ProductsController(IProductService productService) : ControllerBase
     /// <param name="id">The identifier of the product to update.</param>
     /// <param name="dto">The updated product data.</param>
     /// <returns>Detailed data of the updated product.</returns>
-    [HttpPut("{id:int}")]
+    [HttpPut("{id}")]
     [ProducesResponseType<ProductDetailDto>(StatusCodes.Status200OK)]
-    public async Task<ActionResult<ProductDetailDto>> UpdateProduct(int id,CreateProductDto dto)
+    public async Task<ActionResult<ProductDetailDto>> UpdateProduct(string id,CreateProductDto dto)
     {
-        var updatedProduct = await productService.UpdateProductAsync(id, dto);
+        var realId = idEncoder.Decode(id);
+        var updatedProduct = await productService.UpdateProductAsync(realId, dto);
         return Ok(updatedProduct);
     }
     
@@ -98,11 +101,12 @@ public class ProductsController(IProductService productService) : ControllerBase
     /// Deletes a product from the system by its identifier.
     /// </summary>
     /// <param name="id">The identifier of the product to delete.</param>
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> DeleteProduct(int id)
+    public async Task<ActionResult> DeleteProduct(string id)
     {
-        await productService.DeleteProductAsync(id);
+        var realId = idEncoder.Decode(id);
+        await productService.DeleteProductAsync(realId);
         return NoContent();
     }
 }

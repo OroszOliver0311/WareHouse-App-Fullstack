@@ -11,11 +11,14 @@ public class StockMovementServiceAutoMapper(AppDbContext context, IMapper mapper
 {
     public async Task<IEnumerable<StockMovementDto>> GetProductHistoryAsync(int productId)
     {
-        return await context.StockMovements
-            .Where(sm => sm.InventoryItem.ProductId == productId)
-            .OrderByDescending(sm => sm.MovementDate)
-            .ProjectTo<StockMovementDto>(mapper.ConfigurationProvider)
-            .ToListAsync();
+        var movements = await context.StockMovements
+                .Include(sm => sm.InventoryItem)           
+                    .ThenInclude(i => i.WareHouse)          
+                .Where(sm => sm.InventoryItem.ProductId == productId) 
+                .OrderByDescending(sm => sm.MovementDate)
+                .ToListAsync(); 
+
+        return mapper.Map<IEnumerable<StockMovementDto>>(movements);
 
     }
 }

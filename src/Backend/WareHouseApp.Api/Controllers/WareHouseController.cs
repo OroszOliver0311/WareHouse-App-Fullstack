@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WareHouse_App.Entities;
 using WareHouseApp.Bll.Dtos;
+using WareHouseApp.Bll.Dtos.Encoding;
 using WareHouseApp.Bll.Exceptions;
 using WareHouseApp.Bll.Interfaces;
 
@@ -14,10 +15,12 @@ namespace WareHouseApp.Api.Controllers;
 [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
 [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
 [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
-public class WareHousesController(IWareHouseService wareHouseService) : ControllerBase
+public class WareHousesController(IWareHouseService wareHouseService, IIdEncoder idEncoder) : ControllerBase
 {
     /// <summary>
-    /// Retrieves data for all warehouses. This operation requires no parameters and returns a list of warehouses including their identifiers, names and locations. It can be used to get an overview of warehouses or to populate a dropdown where the user can select a warehouse.
+    /// Retrieves data for all warehouses. 
+    /// This operation requires no parameters and returns a list of warehouses including their identifiers, names and locations. 
+    /// It can be used to get an overview of warehouses or to populate a dropdown where the user can select a warehouse.
     /// </summary>
     /// <returns>List of all warehouses</returns>
     [HttpGet]
@@ -57,13 +60,13 @@ public class WareHousesController(IWareHouseService wareHouseService) : Controll
     /// </summary>
     /// <param name="id">The unique identifier of the warehouse</param>
     /// <returns>The data of the requested warehouse</returns>
-    [HttpGet("{id:int}")]
+    [HttpGet("{id}")]
     [ProducesResponseType<WareHouseDto>(StatusCodes.Status200OK)]
-    public async Task<ActionResult<WareHouseDto>> GetWareHouseById(int id)
+    public async Task<ActionResult<WareHouseDto>> GetWareHouseById(string id)
     {
-
-            var warehouse = await wareHouseService.GetWareHouseByIdAsync(id);
-            return Ok(warehouse);
+        var realId = idEncoder.Decode(id);
+        var warehouse = await wareHouseService.GetWareHouseByIdAsync(realId);
+        return Ok(warehouse);
 
     }
     /// <summary>
@@ -84,25 +87,25 @@ public class WareHousesController(IWareHouseService wareHouseService) : Controll
     /// <param name="id">The unique identifier of the warehouse</param>
     /// <param name="dto">The warehouse data to update</param>
     /// <returns>The updated warehouse data</returns>
-    [HttpPut("{id:int}")]
+    [HttpPut("{id}")]
     [ProducesResponseType<WareHouseDto>(StatusCodes.Status200OK)]
-    public async Task<ActionResult<WareHouseDto>> UpdateWareHouse(int id, CreateWareHouseDto dto)
+    public async Task<ActionResult<WareHouseDto>> UpdateWareHouse(string id, CreateWareHouseDto dto)
     {
-
-            var updatedWarehouse = await wareHouseService.UpdateWareHouseAsync(id, dto);
-            return Ok(updatedWarehouse);
-
+        var realId = idEncoder.Decode(id);
+        var updatedWarehouse = await wareHouseService.UpdateWareHouseAsync(realId, dto);
+        return Ok(updatedWarehouse);
     }
     /// <summary>
     /// Deletes the warehouse with the specified identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the warehouse</param>
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> DeleteWareHouse(int id)
+    public async Task<ActionResult> DeleteWareHouse(string id)
     {
+        var realId = idEncoder.Decode(id);      
 
-            await wareHouseService.DeleteWareHouseAsync(id);
+            await wareHouseService.DeleteWareHouseAsync(realId);
             return NoContent();
 
     }

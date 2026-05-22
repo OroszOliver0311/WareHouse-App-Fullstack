@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using WareHouse_App.Entities;
 using WareHouseApp.Bll.Dtos;
+using WareHouseApp.Bll.Dtos.Encoding;
 using WareHouseApp.Bll.Exceptions;
 using WareHouseApp.Bll.Interfaces;
 using WareHouseApp.Dal;
@@ -14,17 +15,19 @@ public class ProductServiceAutoMapper(AppDbContext context, IMapper mapper) : IP
 
     public async Task<IEnumerable<ProductDashboardDto>> GetDashboardAsync()
     {
-        return await context.Products
-                        .ProjectTo<ProductDashboardDto>(mapper.ConfigurationProvider)
-                        .ToListAsync();
-
+        var products = await context.Products
+                    .Include(p => p.InventoryItems) 
+                    .ToListAsync();
+        return mapper.Map<IEnumerable<ProductDashboardDto>>(products);
     }
     public async Task<ProductDetailDto> GetProductDetailAsync(int id)
     {
-        return await context.Products
-                        .ProjectTo<ProductDetailDto>(mapper.ConfigurationProvider)
-                        .SingleOrDefaultAsync(p=> p.Id == id)
-                         ?? throw new EntityNotFoundException("Product", id);
+        var product = await context.Products
+                .Include(p => p.InventoryItems) 
+                .SingleOrDefaultAsync(p => p.Id == id)
+                ?? throw new EntityNotFoundException("Product", id);
+
+        return mapper.Map<ProductDetailDto>(product);
     }
 
     public async Task<ProductDetailDto> CreateProductAsync(CreateProductDto createProduct) 
@@ -41,9 +44,12 @@ public class ProductServiceAutoMapper(AppDbContext context, IMapper mapper) : IP
 
         mapper.Map(updateProduct, p);
         await context.SaveChangesAsync();
-        return await context.Products
-                            .ProjectTo<ProductDashboardDto>(mapper.ConfigurationProvider)
-                            .SingleAsync(pr => pr.Id == id);
+
+        var updatedProduct = await context.Products
+                .Include(pr => pr.InventoryItems) 
+                .SingleAsync(pr => pr.Id == id);  
+
+        return mapper.Map<ProductDashboardDto>(updatedProduct);
     }
     public async Task DeleteProductAsync(int id)
     {
