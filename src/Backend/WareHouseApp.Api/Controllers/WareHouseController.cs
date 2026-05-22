@@ -21,12 +21,37 @@ public class WareHousesController(IWareHouseService wareHouseService) : Controll
     /// </summary>
     /// <returns>List of all warehouses</returns>
     [HttpGet]
+    [MapToApiVersion("1.0")]
     [ProducesResponseType<IEnumerable<WareHouseDto>>(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<WareHouseDto>>> GetAllWareHouses()
+    public async Task<ActionResult<IEnumerable<WareHouseDto>>> GetAllWareHousesV1()
     {
         var warehouses = await wareHouseService.GetAllWareHousesAsync();
         return Ok(warehouses);
     }
+    /// <summary>
+    /// Retrieves paginated data for all warehouses.
+    /// This operation requires no parameters and returns a list of warehouses including their identifiers, names and locations. 
+    /// It can be used to get an overview of warehouses or to populate a dropdown where the user can select a warehouse.
+    /// </summary>
+    /// <param name="pageNumber">The page number to retrieve</param>
+    /// <param name="pageSize">The number of items per page</param>
+    /// <returns></returns>
+    [HttpGet]
+    [MapToApiVersion("2.0")]
+    [ProducesResponseType<PagedResponse<WareHouseDto>>(StatusCodes.Status200OK)]
+    public async Task<ActionResult<PagedResponse<WareHouseDto>>> GetAllWareHousesV2(
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        var allWarehouses = await wareHouseService.GetAllWareHousesAsync();
+        var totalCount = allWarehouses.Count();
+
+        var pagedItems = allWarehouses.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
+        var response = new PagedResponse<WareHouseDto>(pagedItems, pageNumber, pageSize, totalCount);
+        return Ok(response);
+    }
+
     /// <summary>
     /// Retrieves data for the warehouse with the specified identifier.
     /// </summary>

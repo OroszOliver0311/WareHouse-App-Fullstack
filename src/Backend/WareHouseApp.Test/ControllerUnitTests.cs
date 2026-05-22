@@ -22,7 +22,7 @@ public class ControllerUnitTests
 
         var controller = new WareHousesController(mockService.Object);
 
-        var result = await controller.GetAllWareHouses();
+        var result = await controller.GetAllWareHousesV1();
 
         var okResult = result.Result.Should().BeOfType<OkObjectResult>().Subject;
         var returnValue = okResult.Value.Should().BeAssignableTo<IEnumerable<WareHouseDto>>().Subject;
