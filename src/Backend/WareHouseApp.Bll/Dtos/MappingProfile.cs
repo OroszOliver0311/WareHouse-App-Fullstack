@@ -15,7 +15,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.TotalQuantity ,opt => opt.MapFrom(src => src.InventoryItems.Sum(i => i.Quantity)));
        
         CreateMap<InventoryItem, Dtos.ProductDetailWareHouseDto>()
-            .ForMember(dest => dest.Id, opt => opt.ConvertUsing<IntToSqidConverter, int>(src => src.Id))
+            .ForMember(dest => dest.Id, opt => opt.ConvertUsing<IntToSqidConverter, int>(src => src.WareHouseId))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.WareHouse.Name))
             .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.WareHouse.Location));
         
