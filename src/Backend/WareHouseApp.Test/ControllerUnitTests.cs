@@ -57,9 +57,9 @@ public class ControllerUnitTests
 
         var controller = new WareHousesController(mockService.Object);
 
-        var result = await controller.GetWareHouseById(99);
+        Func<Task> action = async () => await controller.GetWareHouseById(99);
 
-        result.Result.Should().BeOfType<NotFoundResult>();
+        await action.Should().ThrowAsync<EntityNotFoundException>();
     }
 
     [Fact]

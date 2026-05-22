@@ -34,15 +34,23 @@ public class ApiIntegrationTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task GetV2Test_ReturnsOk_StringMessage()
+    public async Task UpdateWareHouse_ReturnsOk_WithUpdatedData()
     {
+        var createDto = new CreateWareHouseDto { Name = "Old Warehouse", Location = "Miskolc" };
+        var createResponse = await _client.PostAsJsonAsync("/api/warehouses", createDto, _factory.SerializerOptions);
+        var createdWarehouse = await createResponse.Content.ReadFromJsonAsync<WareHouseDto>(_factory.SerializerOptions);
+        var idToUpdate = createdWarehouse!.Id;
 
-        var response = await _client.GetAsync("/api/warehouses/v2-test");
+        var updateDto = new CreateWareHouseDto { Name = "Super New Warehouse", Location = "Eger" };
 
+        var updateResponse = await _client.PutAsJsonAsync($"/api/warehouses/{idToUpdate}", updateDto, _factory.SerializerOptions);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var message = await response.Content.ReadAsStringAsync();
-        message.Should().Contain("V2");
+        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var updatedWarehouse = await updateResponse.Content.ReadFromJsonAsync<WareHouseDto>(_factory.SerializerOptions);
+        updatedWarehouse.Should().NotBeNull();
+        updatedWarehouse!.Name.Should().Be("Super New Warehouse");
+        updatedWarehouse.Location.Should().Be("Eger");
     }
 
 
@@ -103,4 +111,30 @@ public class ApiIntegrationTests : IClassFixture<CustomWebApplicationFactory>
         var getResponse = await _client.GetAsync($"/api/products/{idToDelete}");
         getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
+   
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public async Task CreateProduct_ReturnsBadRequest_WhenNameIsInvalid(string? invalidName)
+    {
+        var invalidDto = new CreateProductDto
+        {
+            Name = invalidName!,
+            SKU = "TEST-SKU",
+            UnitPrice = 1500
+        };
+
+        var response = await _client.PostAsJsonAsync("/api/products", invalidDto, _factory.SerializerOptions);
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+
+        var problemDetails = await response.Content.ReadFromJsonAsync<Microsoft.AspNetCore.Mvc.ValidationProblemDetails>(_factory.SerializerOptions);
+        problemDetails.Should().NotBeNull();
+        problemDetails!.Status.Should().Be(400);
+    }
+
+
+
+
 }
