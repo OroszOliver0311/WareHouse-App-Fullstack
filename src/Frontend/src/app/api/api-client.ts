@@ -29,14 +29,11 @@ export class InventoryClient {
      * Updates the inventory for a specific product in a specific warehouse. 
     If the inventory record does not exist, it will be created. 
     If it already exists, the quantity will be updated to the new value provided.
-     * @param api_version (optional) 
      * @param x_Api_Version (optional) 
      * @param upsertItem The inventory item data to upsert.
      */
-    inventory_UpsertInventory(api_version: string | null | undefined, x_Api_Version: string | null | undefined, upsertItem: InventoryItemDto): Observable<void> {
-        let url_ = this.baseUrl + "/api/Inventory/upsert?";
-        if (api_version !== undefined && api_version !== null)
-            url_ += "api-version=" + encodeURIComponent("" + api_version) + "&";
+    inventory_UpsertInventory(x_Api_Version: string | null | undefined, upsertItem: InventoryItemDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/Inventory/upsert";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(upsertItem);
@@ -116,14 +113,11 @@ export class ProductsClient {
 
     /**
      * Retrieves aggregated dashboard data for products (basic statistics, total inventory).
-     * @param api_version (optional) 
      * @param x_Api_Version (optional) 
      * @return List of product data required to display the dashboard.
      */
-    products_GetDashboard(api_version: string | null | undefined, x_Api_Version: string | null | undefined): Observable<ProductDashboardDto[]> {
-        let url_ = this.baseUrl + "/api/Products/dashboard?";
-        if (api_version !== undefined && api_version !== null)
-            url_ += "api-version=" + encodeURIComponent("" + api_version) + "&";
+    products_GetDashboard(x_Api_Version: string | null | undefined): Observable<ProductDashboardDto[]> {
+        let url_ = this.baseUrl + "/api/Products/dashboard";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -191,17 +185,14 @@ export class ProductsClient {
     /**
      * Retrieves detailed information for a specific product by its identifier.
      * @param id The unique identifier of the product.
-     * @param api_version (optional) 
      * @param x_Api_Version (optional) 
      * @return Detailed information of the product.
      */
-    products_GetDetails(id: number, api_version: string | null | undefined, x_Api_Version: string | null | undefined): Observable<ProductDetailDto> {
-        let url_ = this.baseUrl + "/api/Products/{id}?";
+    products_GetDetails(id: string, x_Api_Version: string | null | undefined): Observable<ProductDetailDto> {
+        let url_ = this.baseUrl + "/api/Products/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (api_version !== undefined && api_version !== null)
-            url_ += "api-version=" + encodeURIComponent("" + api_version) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -269,18 +260,15 @@ export class ProductsClient {
     /**
      * Updates an existing product's data by its identifier.
      * @param id The identifier of the product to update.
-     * @param api_version (optional) 
      * @param x_Api_Version (optional) 
      * @param dto The updated product data.
      * @return Detailed data of the updated product.
      */
-    products_UpdateProduct(id: number, api_version: string | null | undefined, x_Api_Version: string | null | undefined, dto: CreateProductDto): Observable<ProductDetailDto> {
-        let url_ = this.baseUrl + "/api/Products/{id}?";
+    products_UpdateProduct(id: string, x_Api_Version: string | null | undefined, dto: CreateProductDto): Observable<ProductDetailDto> {
+        let url_ = this.baseUrl + "/api/Products/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (api_version !== undefined && api_version !== null)
-            url_ += "api-version=" + encodeURIComponent("" + api_version) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -352,16 +340,13 @@ export class ProductsClient {
     /**
      * Deletes a product from the system by its identifier.
      * @param id The identifier of the product to delete.
-     * @param api_version (optional) 
      * @param x_Api_Version (optional) 
      */
-    products_DeleteProduct(id: number, api_version: string | null | undefined, x_Api_Version: string | null | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/Products/{id}?";
+    products_DeleteProduct(id: string, x_Api_Version: string | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Products/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (api_version !== undefined && api_version !== null)
-            url_ += "api-version=" + encodeURIComponent("" + api_version) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -425,15 +410,12 @@ export class ProductsClient {
 
     /**
      * Creates a new product in the system.
-     * @param api_version (optional) 
      * @param x_Api_Version (optional) 
      * @param createdproduct The data of the product to create.
      * @return The newly created product's detailed data and the route to access it.
      */
-    products_CreateProduct(api_version: string | null | undefined, x_Api_Version: string | null | undefined, createdproduct: CreateProductDto): Observable<ProductDetailDto> {
-        let url_ = this.baseUrl + "/api/Products?";
-        if (api_version !== undefined && api_version !== null)
-            url_ += "api-version=" + encodeURIComponent("" + api_version) + "&";
+    products_CreateProduct(x_Api_Version: string | null | undefined, createdproduct: CreateProductDto): Observable<ProductDetailDto> {
+        let url_ = this.baseUrl + "/api/Products";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(createdproduct);
@@ -517,17 +499,14 @@ export class StockMovementsClient {
     /**
      * Queries the stock movement history for a specific product by its ID.
      * @param id The ID of the product for which to query movement history.
-     * @param api_version (optional) 
      * @param x_Api_Version (optional) 
      * @return The list of stock movements for the specified product, ordered from most recent to oldest.
      */
-    stockMovements_GetProductHistory(id: number, api_version: string | null | undefined, x_Api_Version: string | null | undefined): Observable<StockMovementDto[]> {
-        let url_ = this.baseUrl + "/api/StockMovements/product/{id}?";
+    stockMovements_GetProductHistory(id: string, x_Api_Version: string | null | undefined): Observable<StockMovementDto[]> {
+        let url_ = this.baseUrl + "/api/StockMovements/product/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (api_version !== undefined && api_version !== null)
-            url_ += "api-version=" + encodeURIComponent("" + api_version) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -605,15 +584,14 @@ export class WareHousesClient {
     }
 
     /**
-     * Retrieves data for all warehouses. This operation requires no parameters and returns a list of warehouses including their identifiers, names and locations. It can be used to get an overview of warehouses or to populate a dropdown where the user can select a warehouse.
-     * @param api_version (optional) 
+     * Retrieves data for all warehouses. 
+    This operation requires no parameters and returns a list of warehouses including their identifiers, names and locations. 
+    It can be used to get an overview of warehouses or to populate a dropdown where the user can select a warehouse.
      * @param x_Api_Version (optional) 
      * @return List of all warehouses
      */
-    wareHouses_GetAllWareHouses(api_version: string | null | undefined, x_Api_Version: string | null | undefined): Observable<WareHouseDto[]> {
-        let url_ = this.baseUrl + "/api/WareHouses?";
-        if (api_version !== undefined && api_version !== null)
-            url_ += "api-version=" + encodeURIComponent("" + api_version) + "&";
+    wareHouses_GetAllWareHouses(x_Api_Version: string | null | undefined): Observable<WareHouseDto[]> {
+        let url_ = this.baseUrl + "/api/WareHouses";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -680,15 +658,12 @@ export class WareHousesClient {
 
     /**
      * Creates a new warehouse using the provided data. This operation expects a CreateWareHouseDto in the request body containing the warehouse name and location. On success it returns a WareHouseDto with the created warehouse data, HTTP 201 Created status and the resource location in the Location header.
-     * @param api_version (optional) 
      * @param x_Api_Version (optional) 
      * @param dto The data for the warehouse to create
      * @return The created warehouse data
      */
-    wareHouses_CreateWareHouse(api_version: string | null | undefined, x_Api_Version: string | null | undefined, dto: CreateWareHouseDto): Observable<WareHouseDto> {
-        let url_ = this.baseUrl + "/api/WareHouses?";
-        if (api_version !== undefined && api_version !== null)
-            url_ += "api-version=" + encodeURIComponent("" + api_version) + "&";
+    wareHouses_CreateWareHouse(x_Api_Version: string | null | undefined, dto: CreateWareHouseDto): Observable<WareHouseDto> {
+        let url_ = this.baseUrl + "/api/WareHouses";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -760,17 +735,14 @@ export class WareHousesClient {
     /**
      * Retrieves data for the warehouse with the specified identifier.
      * @param id The unique identifier of the warehouse
-     * @param api_version (optional) 
      * @param x_Api_Version (optional) 
      * @return The data of the requested warehouse
      */
-    wareHouses_GetWareHouseById(id: number, api_version: string | null | undefined, x_Api_Version: string | null | undefined): Observable<WareHouseDto> {
-        let url_ = this.baseUrl + "/api/WareHouses/{id}?";
+    wareHouses_GetWareHouseById(id: string, x_Api_Version: string | null | undefined): Observable<WareHouseDto> {
+        let url_ = this.baseUrl + "/api/WareHouses/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (api_version !== undefined && api_version !== null)
-            url_ += "api-version=" + encodeURIComponent("" + api_version) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -838,18 +810,15 @@ export class WareHousesClient {
     /**
      * Updates the warehouse with the specified identifier using the provided data.
      * @param id The unique identifier of the warehouse
-     * @param api_version (optional) 
      * @param x_Api_Version (optional) 
      * @param dto The warehouse data to update
      * @return The updated warehouse data
      */
-    wareHouses_UpdateWareHouse(id: number, api_version: string | null | undefined, x_Api_Version: string | null | undefined, dto: CreateWareHouseDto): Observable<WareHouseDto> {
-        let url_ = this.baseUrl + "/api/WareHouses/{id}?";
+    wareHouses_UpdateWareHouse(id: string, x_Api_Version: string | null | undefined, dto: CreateWareHouseDto): Observable<WareHouseDto> {
+        let url_ = this.baseUrl + "/api/WareHouses/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (api_version !== undefined && api_version !== null)
-            url_ += "api-version=" + encodeURIComponent("" + api_version) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -921,16 +890,13 @@ export class WareHousesClient {
     /**
      * Deletes the warehouse with the specified identifier.
      * @param id The unique identifier of the warehouse
-     * @param api_version (optional) 
      * @param x_Api_Version (optional) 
      */
-    wareHouses_DeleteWareHouse(id: number, api_version: string | null | undefined, x_Api_Version: string | null | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/WareHouses/{id}?";
+    wareHouses_DeleteWareHouse(id: string, x_Api_Version: string | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/WareHouses/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (api_version !== undefined && api_version !== null)
-            url_ += "api-version=" + encodeURIComponent("" + api_version) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1016,20 +982,20 @@ export interface ValidationProblemDetails extends HttpValidationProblemDetails {
 }
 
 export interface InventoryItemDto {
-    productId?: number;
-    wareHouseId?: number;
+    productId: string;
+    wareHouseId: string;
     quantity?: number;
 }
 
 export interface ProductDashboardDto {
-    id?: number;
+    id: string;
     name?: string;
     sku?: string;
     totalQuantity?: number;
 }
 
 export interface ProductDetailDto {
-    id?: number;
+    id: string;
     name?: string;
     sku?: string;
     unitPrice?: number;
@@ -1037,20 +1003,20 @@ export interface ProductDetailDto {
 }
 
 export interface ProductDetailWareHouseDto {
-    id?: number;
+    id: string;
     name?: string | undefined;
     location?: string;
     quantity?: number;
 }
 
 export interface CreateProductDto {
-    name?: string;
-    sku?: string;
+    name: string;
+    sku: string;
     unitPrice?: number;
 }
 
 export interface StockMovementDto {
-    id?: number;
+    id: string;
     wareHouseLocation?: string;
     isIncoming?: boolean;
     quantity?: number;
@@ -1058,14 +1024,14 @@ export interface StockMovementDto {
 }
 
 export interface WareHouseDto {
-    id?: number;
+    id: string;
     name?: string | undefined;
     location?: string;
 }
 
 export interface CreateWareHouseDto {
     name?: string | undefined;
-    location?: string;
+    location: string;
 }
 
 export class ApiException extends Error {

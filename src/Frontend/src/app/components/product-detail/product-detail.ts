@@ -18,7 +18,7 @@ export class ProductDetail implements OnInit {
   private readonly productService = inject(ProductService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() productId!: number;
+  @Input() productId!: string;
   @Output() back = new EventEmitter<void>();
   
   product = signal<ProductDetailDto | null>(null);
@@ -28,14 +28,14 @@ export class ProductDetail implements OnInit {
 
   displayedColumns: string[] = ['warehouse', 'location', 'quantity', 'actions'];
 
-  originalStocks: { [warehouseId: number]: number } = {};
+  originalStocks: { [warehouseId: string]: number } = {};
   history = signal<any[]>([]);
 
   allWarehouses: any[] = [];
   availableWarehouses: any[] = [];
   
   newAssignment = {
-    warehouseId: null as number | null,
+    warehouseId: null as string | null,
     quantity: 0
   };
 
@@ -79,7 +79,7 @@ loadProduct(): void {
         this.originalStocks = {};
         if (data.stocks) {
           data.stocks.forEach((stock: any) => {
-            this.originalStocks[stock.id] = stock.quantity; 
+            this.originalStocks[stock.id] = Number(stock.quantity); 
           });
         }
         
@@ -153,15 +153,15 @@ loadProduct(): void {
     });
   }
 
-  isStockDirty(warehouseId: number, currentQuantity: any): boolean {
+  isStockDirty(warehouseId: string, currentQuantity: any): boolean {
     const qty = Number(currentQuantity);
     if (currentQuantity === null || currentQuantity === undefined || qty < 0) {
       return false;
-    }
+    } 
     return this.originalStocks[warehouseId] !== qty;
   }
 
-  updateStock(warehouseId: number, currentQuantity: any): void {
+  updateStock(warehouseId: string, currentQuantity: any): void {
     const quantityAsNumber = Number(currentQuantity);
     if (quantityAsNumber < 0) return;
 
@@ -180,7 +180,7 @@ loadProduct(): void {
     });
   }
   
-removeStock(warehouseId: number): void {
+removeStock(warehouseId: string): void {
 
     this.productService.updateStockQuantity(this.productId, warehouseId, 0).subscribe({
       next: () => {

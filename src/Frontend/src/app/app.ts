@@ -13,9 +13,9 @@ import { ProductDetail } from './components/product-detail/product-detail';
 export class App {
   title = 'Warehouse Management System';
   
-  selectedProductId = signal<number | null>(null);
+  selectedProductId = signal<string | null>(null);
 
-  selectProduct(id: number): void {
+  selectProduct(id: string): void {
     this.selectedProductId.set(id);
   }
 

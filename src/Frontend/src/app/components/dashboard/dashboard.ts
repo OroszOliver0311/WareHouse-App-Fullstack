@@ -17,7 +17,7 @@ import { ProductDashboardDto } from '../../api/api-client';
 export class Dashboard implements OnInit {
   private readonly productService = inject(ProductService);
 
-  @Output() productSelected = new EventEmitter<number>();
+  @Output() productSelected = new EventEmitter<string>();
 
   dataSource = signal<ProductDashboardDto[]>([]);
   displayedColumns: string[] = ['name', 'sku', 'totalQuantity', 'actions'];
@@ -42,7 +42,7 @@ export class Dashboard implements OnInit {
     });
   }
 
-  onRowClick(id: number): void {
+  onRowClick(id: string): void {
     this.productSelected.emit(id);
   }
 
@@ -65,7 +65,7 @@ isFormValid(): boolean {
     });
   }
 
-  deleteProduct(id: number, event: Event): void {
+  deleteProduct(id: string, event: Event): void {
     event.stopPropagation();
     
     this.productService.deleteProduct(id).subscribe({

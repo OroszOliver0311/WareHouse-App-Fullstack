@@ -24,7 +24,7 @@ public class ProductsController(IProductService productService, IIdEncoder idEnc
     [HttpGet("dashboard")]
     [MapToApiVersion("1.0")]
     [ProducesResponseType<IEnumerable<ProductDashboardDto>>(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<ProductDashboardDto>>> GetDashboardV1()
+    public async Task<ActionResult<IEnumerable<ProductDashboardDto>>> GetDashboard()
     {
         var data = await productService.GetDashboardAsync();
         return Ok(data);
@@ -39,7 +39,7 @@ public class ProductsController(IProductService productService, IIdEncoder idEnc
     [HttpGet("dashboard")]
     [MapToApiVersion("2.0")] 
     [ProducesResponseType<PagedResponse<ProductDashboardDto>>(StatusCodes.Status200OK)]
-    public async Task<ActionResult<PagedResponse<ProductDashboardDto>>> GetDashboardV2(
+    public async Task<ActionResult<PagedResponse<ProductDashboardDto>>> GetDashboard(
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10)
     {

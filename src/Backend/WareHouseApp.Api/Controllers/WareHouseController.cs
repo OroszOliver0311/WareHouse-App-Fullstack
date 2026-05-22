@@ -26,7 +26,7 @@ public class WareHousesController(IWareHouseService wareHouseService, IIdEncoder
     [HttpGet]
     [MapToApiVersion("1.0")]
     [ProducesResponseType<IEnumerable<WareHouseDto>>(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<WareHouseDto>>> GetAllWareHousesV1()
+    public async Task<ActionResult<IEnumerable<WareHouseDto>>> GetAllWareHouses()
     {
         var warehouses = await wareHouseService.GetAllWareHousesAsync();
         return Ok(warehouses);
@@ -42,7 +42,7 @@ public class WareHousesController(IWareHouseService wareHouseService, IIdEncoder
     [HttpGet]
     [MapToApiVersion("2.0")]
     [ProducesResponseType<PagedResponse<WareHouseDto>>(StatusCodes.Status200OK)]
-    public async Task<ActionResult<PagedResponse<WareHouseDto>>> GetAllWareHousesV2(
+    public async Task<ActionResult<PagedResponse<WareHouseDto>>> GetAllWareHouses(
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10)
     {
