@@ -3,6 +3,5 @@
     <Project Path="WareHouseApp.Api/WareHouseApp.Api.csproj" Id="6c66c66f-30de-4994-8ab9-86691049833a" />
     <Project Path="WareHouseApp.Bll/WareHouseApp.Bll.csproj" />
     <Project Path="WareHouseApp.Dal/WareHouseApp.Dal.csproj" />
-    <Project Path="WareHouseApp.Test/WareHouseApp.Test.csproj" Id="507e1e00-7084-4776-baf1-f92494ed48d2" />
   </Folder>
 </Solution>
