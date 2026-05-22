@@ -25,43 +25,43 @@ export class ProductService {
   private readonly wareHousesClient = inject(WareHousesClient);
 
   getDashboard(): Observable<ProductDashboardDto[]> {
-    return this.productsClient.products_GetDashboard(undefined, undefined);
+    return this.productsClient.products_GetDashboard(undefined);
   }
 
-  getProductById(id: number): Observable<ProductDetailDto> {
-    return this.productsClient.products_GetDetails(id, undefined, undefined);
+  getProductById(id: string): Observable<ProductDetailDto> {
+    return this.productsClient.products_GetDetails(id, undefined);
   }
 
   createProduct(productData: CreateProductDto): Observable<ProductDetailDto> {
-    return this.productsClient.products_CreateProduct(undefined, undefined, productData);
+    return this.productsClient.products_CreateProduct(undefined, productData);
   }
 
-  updateProduct(id: number, productData: CreateProductDto): Observable<ProductDetailDto> {
-    return this.productsClient.products_UpdateProduct(id, undefined, undefined, productData);
+  updateProduct(id: string, productData: CreateProductDto): Observable<ProductDetailDto> {
+    return this.productsClient.products_UpdateProduct(id, undefined, productData);
   }
 
-  deleteProduct(id: number): Observable<void> {
-    return this.productsClient.products_DeleteProduct(id, undefined, undefined);
+  deleteProduct(id: string): Observable<void> {
+    return this.productsClient.products_DeleteProduct(id, undefined);
   }
 
   createWarehouse(warehouseData: CreateWareHouseDto): Observable<WareHouseDto> {
-    return this.wareHousesClient.wareHouses_CreateWareHouse(undefined, undefined, warehouseData);
+    return this.wareHousesClient.wareHouses_CreateWareHouse(undefined, warehouseData);
   }
 
-  updateStockQuantity(productId: number, warehouseId: number, quantity: number): Observable<void> {
+  updateStockQuantity(productId: string, warehouseId: string, quantity: number): Observable<void> {
     const payload: InventoryItemDto = {
       productId: productId,
       wareHouseId: warehouseId,
       quantity: quantity
     };
-    return this.inventoryClient.inventory_UpsertInventory(undefined, undefined, payload);
+    return this.inventoryClient.inventory_UpsertInventory(undefined, payload);
   }
 
-  getProductHistory(productId: number): Observable<StockMovementDto[]> {
-    return this.stockMovementsClient.stockMovements_GetProductHistory(productId, undefined, undefined);
+  getProductHistory(productId: string): Observable<StockMovementDto[]> {
+    return this.stockMovementsClient.stockMovements_GetProductHistory(productId, undefined);
   }
 
   getAllWarehouses(): Observable<WareHouseDto[]> {
-    return this.wareHousesClient.wareHouses_GetAllWareHouses(undefined, undefined);
+    return this.wareHousesClient.wareHouses_GetAllWareHouses(undefined);
   }
 }

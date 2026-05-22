@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WareHouseApp.Api.Exceptions;
 using WareHouseApp.Bll.Dtos;
@@ -67,14 +68,16 @@ builder.Services.AddScoped<IProductService, ProductServiceAutoMapper>();
 builder.Services.AddScoped<IInventoryService, InventoryServiceLINQ>();
 builder.Services.AddScoped<IWareHouseService, WareHouseServiceAutoMapper>();
 builder.Services.AddScoped<IStockMovementService, StockMovementServiceAutoMapper>();
-
+builder.Services.AddSingleton<IIdEncoder, IdEncoder>();
+builder.Services.AddScoped<IntToSqidConverter>();
+builder.Services.AddScoped<SqidToIntConverter>();
 builder.Services.AddAutoMapper(a => a.AddProfile<MappingProfile>());
 builder.Services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-builder.Services.AddSingleton<IIdEncoder, IdEncoder>();
+
 
 builder.Services.AddCors(options =>
 {
