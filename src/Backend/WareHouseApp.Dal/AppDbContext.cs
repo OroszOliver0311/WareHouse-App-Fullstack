@@ -29,7 +29,11 @@ public class AppDbContext : DbContext
             new Product { Id = 2, Name = "Dell UltraSharp U2723QE", SKU = "DELL-U2723QE", UnitPrice = 210000 },
             new Product { Id = 3, Name = "Keychron K2 V2", SKU = "KEY-K2-V2-RGB", UnitPrice = 42000 }
         );
-        
+
+       
+        modelBuilder.Entity<InventoryItem>()
+            .HasIndex(i => new { i.ProductId, i.WareHouseId })
+            .IsUnique();
         modelBuilder.Entity<InventoryItem>().HasData(
             // Budapest (Id: 1)
             new InventoryItem { Id = 1, ProductId = 1, WareHouseId = 1, Quantity = 15 },

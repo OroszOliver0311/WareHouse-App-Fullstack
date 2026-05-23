@@ -74,7 +74,7 @@ public class ApiIntegrationTests : IClassFixture<CustomWebApplicationFactory>
 
         var createdProduct = await response.Content.ReadFromJsonAsync<ProductDetailDto>(_factory.SerializerOptions);
         createdProduct.Should().NotBeNull();
-        createdProduct!.Id.Should().BeGreaterThan(0); 
+        createdProduct!.Id.Should().NotBeNullOrEmpty(); 
         createdProduct.Name.Should().Be(newProductDto.Name);
     }
 
@@ -83,7 +83,7 @@ public class ApiIntegrationTests : IClassFixture<CustomWebApplicationFactory>
     public async Task GetProductDetails_ReturnsNotFound_WhenIdDoesNotExist()
     {
     
-        var response = await _client.GetAsync("/api/products/99999");
+        var response = await _client.GetAsync("/api/products/invalidID12");
 
   
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);

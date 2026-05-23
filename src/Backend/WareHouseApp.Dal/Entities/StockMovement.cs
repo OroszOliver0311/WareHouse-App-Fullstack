@@ -1,5 +1,8 @@
-﻿namespace WareHouse_App.Entities;
+﻿using Microsoft.EntityFrameworkCore;
 
+namespace WareHouse_App.Entities;
+
+[Index(nameof(MovementDate))]
 public class StockMovement
 {
     public int Id { get; set; }
