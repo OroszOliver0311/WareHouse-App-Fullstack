@@ -28,22 +28,22 @@ Kliens: Angular
 
 ## NHF Megszerezni kívánt pontok
 
-adatbázis index konfigurációja az EF modellben [3]  
-verziókezelt API. Szemléltetés két különböző verziós API egyidejű kiszolgálásával. A kívánt verziót HTTP fejléc vagy például URL szegmens alapján választhatja meg a kliens. [7]  
-az EF Core működőképességét, az adatbázis elérhetőségét jelző health check végpont publikálása a Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore NuGet csomag használatával[3]  
-külső komponens használata DTO-k inicializálásáraObject mapper, pl. AutoMapper [3]  
-minimum 10 függvényhez/végponthoz [7]  
-a unit tesztekben a mock objektumok injektálása [3]  
-EF Core memória-adatbázis vagy sqlite (vagy in-memory sqlite) használata teszteléshez [4]  
-adatbetöltés (seeding) migráció segítségével[3]  
-saját Code-First konvenció készítése [5]  
-Dátumok helyes kezelése olyan esetben is, ha a kliens és a szerver(ek) eltérő időzónában vannak. (tipikusan DateTimeOffset használata). Implementációt nem kell bemutatáskör demonstrálni, de a kód alapján érvelve bizonyítani kell a helyes működést.[5]  
-Központosított hibakezelés, a kliens számára értelmezhető ProblemDetails objektumok küldése hibás kérések esetén. Tehát nem a Controllerekben van try-catch, hanem a hibák központilag vannak kezelve[5]  
-Adatbázis entitás elsődleges kulcs elrejtése a kliens elől véletlenszerűen generált, nem növekvő sorrendben kiosztott kulcsokkal. A kliens nem ismeri az adatbázis entitás kulcs értékét, helyette egy generált kulcsot lát csak. Az adatbázis nem tárolja a generált kulcsot. Megvalósítható kétirányú szám <-> generált azonosító függvények[7]  
-az API-nak egyidejűleg több támogatott verziója van, mindegyik dokumentált és mindegyik támogatott verzió dokumentációja elérhető [4]  
-A kliensen az OpenApi leíró alapján generált klienskönyvtár használata [5]  
-Command-line generátor eszköz használata és konfigurálása [3]
-minden végpont kliens szempontjából releváns működése dokumentált, minden lehetséges válaszkóddal együtt[3] 
+adatbázis index konfigurációja az EF modellben  
+verziókezelt API. Szemléltetés két különböző verziós API egyidejű kiszolgálásával. A kívánt verziót HTTP fejléc vagy például URL szegmens alapján választhatja meg a kliens.   
+az EF Core működőképességét, az adatbázis elérhetőségét jelző health check végpont publikálása a Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore NuGet csomag használatával.  
+külső komponens használata DTO-k inicializálásáraObject mapper, pl. AutoMapper  
+minimum 10 függvényhez/végponthoz  
+a unit tesztekben a mock objektumok injektálása  
+EF Core memória-adatbázis vagy sqlite (vagy in-memory sqlite) használata teszteléshez  
+adatbetöltés (seeding) migráció segítségével  
+saját Code-First konvenció készítése   
+Dátumok helyes kezelése olyan esetben is, ha a kliens és a szerver(ek) eltérő időzónában vannak. (tipikusan DateTimeOffset használata). Implementációt nem kell bemutatáskör demonstrálni, de a kód alapján érvelve bizonyítani kell a helyes működést.  
+Központosított hibakezelés, a kliens számára értelmezhető ProblemDetails objektumok küldése hibás kérések esetén. Tehát nem a Controllerekben van try-catch, hanem a hibák központilag vannak kezelve  
+Adatbázis entitás elsődleges kulcs elrejtése a kliens elől véletlenszerűen generált, nem növekvő sorrendben kiosztott kulcsokkal. A kliens nem ismeri az adatbázis entitás kulcs értékét, helyette egy generált kulcsot lát csak. Az adatbázis nem tárolja a generált kulcsot. Megvalósítható kétirányú szám <-> generált azonosító függvények  
+az API-nak egyidejűleg több támogatott verziója van, mindegyik dokumentált és mindegyik támogatott verzió dokumentációja elérhető   
+A kliensen az OpenApi leíró alapján generált klienskönyvtár használata  
+Command-line generátor eszköz használata és konfigurálása
+minden végpont kliens szempontjából releváns működése dokumentált, minden lehetséges válaszkóddal együtt. 
 
 
 
