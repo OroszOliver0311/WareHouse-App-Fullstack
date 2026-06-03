@@ -1,0 +1,23 @@
+{
+  "runtime": "Net80",
+  "documentGenerator": {
+    "fromDocument": {
+      "url": "https://localhost:7122/swagger/v1/swagger.json"
+    }
+  },
+  "codeGenerators": {
+    "openApiToTypeScriptClient": {
+      "className": "{controller}Client",
+      "template": "Angular",
+      "rxJsVersion": 7.0,
+      "httpClass": "HttpClient",
+      "injectionTokenType": "InjectionToken",
+      "dateTimeType": "Date",
+      "typeStyle": "Interface",
+      "generateClientClasses": true,
+      "generateDtoTypes": true,
+      "operationGenerationMode": "MultipleClientsFromFirstTagAndOperationId",
+      "output": "src/app/api/api-client.ts"
+    }
+  }
+}

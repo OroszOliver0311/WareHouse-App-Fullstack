@@ -1,0 +1,127 @@
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
+using WareHouse_App.Entities;
+using WareHouseApp.Bll.Dtos;
+using WareHouseApp.Bll.Dtos.Encoding;
+using WareHouseApp.Bll.Exceptions;
+using WareHouseApp.Bll.Interfaces;
+
+namespace WareHouseApp.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiVersion("1.0")]
+[ApiVersion("2.0")]
+[ApiController]
+[ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
+[ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+[ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
+public class WareHousesController(IWareHouseService wareHouseService, IIdEncoder idEncoder) : ControllerBase
+{
+    /// <summary>
+    /// Retrieves data for all warehouses. 
+    /// This operation requires no parameters and returns a list of warehouses including their identifiers, names and locations. 
+    /// It can be used to get an overview of warehouses or to populate a dropdown where the user can select a warehouse.
+    /// </summary>
+    /// <returns>List of all warehouses</returns>
+    [HttpGet]
+    [MapToApiVersion("1.0")]
+    [ProducesResponseType<IEnumerable<WareHouseDto>>(StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<WareHouseDto>>> GetAllWareHouses()
+    {
+        var warehouses = await wareHouseService.GetAllWareHousesAsync();
+        return Ok(warehouses);
+    }
+    /// <summary>
+    /// Retrieves paginated data for all warehouses.
+    /// This operation requires no parameters and returns a list of warehouses including their identifiers, names and locations. 
+    /// It can be used to get an overview of warehouses or to populate a dropdown where the user can select a warehouse.
+    /// </summary>
+    /// <param name="pageNumber">The page number to retrieve</param>
+    /// <param name="pageSize">The number of items per page</param>
+    /// <returns></returns>
+    [HttpGet]
+    [MapToApiVersion("2.0")]
+    [ProducesResponseType<PagedResponse<WareHouseDto>>(StatusCodes.Status200OK)]
+    public async Task<ActionResult<PagedResponse<WareHouseDto>>> GetAllWareHouses(
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        var allWarehouses = await wareHouseService.GetAllWareHousesAsync();
+        var totalCount = allWarehouses.Count();
+
+        var pagedItems = allWarehouses.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
+        var response = new PagedResponse<WareHouseDto>(pagedItems, pageNumber, pageSize, totalCount);
+        return Ok(response);
+    }
+
+    /// <summary>
+    /// Retrieves data for the warehouse with the specified identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the warehouse</param>
+    /// <returns>The data of the requested warehouse</returns>
+    [HttpGet("{id}")]
+    [ProducesResponseType<WareHouseDto>(StatusCodes.Status200OK)]
+    public async Task<ActionResult<WareHouseDto>> GetWareHouseById(string id)
+    {
+        var realId = idEncoder.Decode(id);
+        var warehouse = await wareHouseService.GetWareHouseByIdAsync(realId);
+        return Ok(warehouse);
+
+    }
+    /// <summary>
+    /// Creates a new warehouse using the provided data. This operation expects a CreateWareHouseDto in the request body containing the warehouse name and location. On success it returns a WareHouseDto with the created warehouse data, HTTP 201 Created status and the resource location in the Location header.
+    /// </summary>
+    /// <param name="dto">The data for the warehouse to create</param>
+    /// <returns>The created warehouse data</returns>
+    [HttpPost]
+    [ProducesResponseType<WareHouseDto>(StatusCodes.Status201Created)]
+    public async Task<ActionResult<WareHouseDto>> CreateWareHouse(CreateWareHouseDto dto)
+    {
+        var newWarehouse = await wareHouseService.CreateWareHouseAsync(dto);
+        return CreatedAtAction(nameof(GetWareHouseById), new { id = newWarehouse.Id }, newWarehouse);
+    }
+    /// <summary>
+    /// Updates the warehouse with the specified identifier using the provided data.
+    /// </summary>
+    /// <param name="id">The unique identifier of the warehouse</param>
+    /// <param name="dto">The warehouse data to update</param>
+    /// <returns>The updated warehouse data</returns>
+    [HttpPut("{id}")]
+    [ProducesResponseType<WareHouseDto>(StatusCodes.Status200OK)]
+    public async Task<ActionResult<WareHouseDto>> UpdateWareHouse(string id, CreateWareHouseDto dto)
+    {
+        var realId = idEncoder.Decode(id);
+        var updatedWarehouse = await wareHouseService.UpdateWareHouseAsync(realId, dto);
+        return Ok(updatedWarehouse);
+    }
+    /// <summary>
+    /// Deletes the warehouse with the specified identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the warehouse</param>
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> DeleteWareHouse(string id)
+    {
+        var realId = idEncoder.Decode(id);      
+
+            await wareHouseService.DeleteWareHouseAsync(realId);
+            return NoContent();
+
+    }
+
+
+
+    /// <summary>
+    /// New function for v2
+    /// </summary>
+    [HttpGet("v2-test")]
+    [MapToApiVersion("2.0")] 
+    [ProducesResponseType<string>(StatusCodes.Status200OK)]
+    public ActionResult<string> GetV2Test()
+    {
+        return Ok("Success called  v2");
+    }
+
+
+}
