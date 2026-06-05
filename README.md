@@ -1,5 +1,3 @@
-# Szoftverfejlesztés .NET platformra - Házi feladat
-
 ## Követelmény specifikáció
 Az alkalmazás célja több telephelyes raktárkészlet nyilvántartása. A rendszer lehetővé teszi a termékek raktárankénti követését és a készletmozgások transzparens naplózását.
 
